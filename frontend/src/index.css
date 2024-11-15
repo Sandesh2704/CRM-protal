@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root{
+  --gradiant : linear-gradient(266deg, #a54de3 32%, #ff08e9 71%);
+  --bg-color1 : #e9d5ff66;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.bg-gradiant{
+  /* background: linear-gradient(266deg, #a54de3 32%, #ff08e9 71%); */
+  background: linear-gradient(106deg, rgba(106,3,194,1) 65%, rgba(231,16,212,1) 100%);
+}
+.bg-color1{
+  background-color: var(--bg-color1);
+}
+
+.text-gradient{
+  background: linear-gradient(90deg, rgba(106,3,194,1) 50%, rgba(231,16,212,1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* styling for toast masseges/alert */
+.toast-container {
+  position: fixed;
+  top: 70px; 
+  right: 10px;
+}
+
+/* Customs-popup start here*/
+.custom-popup {
+  border-radius: 10px;
+  border-bottom: 10px solid rgb(1, 21, 59); /* Set border color */ /* Optional: Set border radius */
+}
+
+.custom-popup .swal2-title {
+  font-size: 27px;
+  color: #000000; /* Set title color */
+}
+
+.custom-popup .swal2-confirm {
+  background-color:  #ec0bd9 ; /* Set button background color */
+  color: #fffbfb; /* Set button text color */
+  padding: 8px 26px;
+}
+
+.custom-popup .swal2-icon {
+  border-color: var(--gradiant);
+}
+
+@media only screen and (max-width: 1091px){ 
+
+  .custom-popup .swal2-title {
+    font-size: 24px;
+  }
+}
+
+@media only screen and (max-width: 991px){ 
+
+  .custom-popup .swal2-title {
+    font-size: 24px;
+  }
+}
+
+  @media only screen and (max-width: 470px){ 
+    .custom-popup .swal2-title {
+      font-size: 20px;
+    }
+    .custom-popup .swal2-confirm {
+     /* Set button text color */
+      padding: 8px 20px;
+    }
+  }
