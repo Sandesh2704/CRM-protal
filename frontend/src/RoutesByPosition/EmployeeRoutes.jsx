@@ -1,11 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 
 import Layout from '../layout/Layout';
-import Dashboard from '../pages/teamLeader/Dashboard';
-import Profile from '../pages/Profile';
-import TeamMember from '../pages/teamLeader/TeamMember';
-import AddTeamMember from '../pages/teamLeader/AddTeamMember';
-
+import Dashboard from '../pages/employ/Dashboard';
+import DailyUpdateFrom from '../pages/DailyUpdateFrom';
 
 export default function EmployeeRoutes() {
   return (
@@ -15,9 +12,7 @@ export default function EmployeeRoutes() {
         <Route path="/" element={<Layout />}>
           {/* Nested routes */}
           <Route index element={<Dashboard />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="team-members" element={<TeamMember />} />
-          <Route path="add-team-member" element={<AddTeamMember />} />
+          <Route path="daily-update-form" element={<DailyUpdateFrom />} />  
         </Route>
       </Routes>
     </>

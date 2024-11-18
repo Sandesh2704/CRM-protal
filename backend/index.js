@@ -5,11 +5,11 @@ const connectDB = require("./dbconnect/dbconnect")
 const cors = require('cors');
 const path = require('path');
 const authRoute = require("./Router/auth-router")
-const taskManage =  require("./Router/task-router")
-const departementManage  =  require("./Router/department-router")
-const userManage =  require("./Router/user-router")
+const taskManage = require("./Router/task-router")
+const departementManage = require("./Router/department-router")
+const userManage = require("./Router/user-router")
 const attendanceManage = require('./Router/attendance-router');
-
+const dailyUpdateManage = require('./Router/daily-update-router');
 
 // app.use(cors());
 app.use(cors({
@@ -24,28 +24,28 @@ app.use(express.json())
 //  to get all functionality for image uplaod  
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.use("/taskManage", taskManage)
+// auth 
+app.use("/auth", authRoute)
 
 app.use("/departementManage", departementManage)
 
 app.use("/userManage", userManage)
 
-// auth 
-app.use("/auth", authRoute)
-
+app.use("/taskManage", taskManage)
 
 app.use('/attendanceManage', attendanceManage);
 
+app.use('/dailyUpdateManage', dailyUpdateManage);
 
-app.get("/", (req, res) =>{
+app.get("/", (req, res) => {
     res.status(200).send("welcome")
 })
 
 
-const PORT =  8000;
+const PORT = 8000;
 
-connectDB().then(()=>{
-    app.listen(PORT, ()=>{
+connectDB().then(() => {
+    app.listen(PORT, () => {
         console.log(`server is running at port: ${PORT}`)
-    })  
+    })
 })

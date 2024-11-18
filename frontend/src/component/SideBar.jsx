@@ -10,7 +10,7 @@ import { RiFileList2Line } from 'react-icons/ri';
 import { CgGoogleTasks } from 'react-icons/cg';
 import { SlCalender } from "react-icons/sl";
 import { GrTasks } from "react-icons/gr";
-
+import { FaWpforms } from "react-icons/fa6";
 
 export default function SideBar({ isOpen, toggleSidebar }) {
   const { userJobPosition } = useAuth();
@@ -22,6 +22,7 @@ export default function SideBar({ isOpen, toggleSidebar }) {
       { path: '/founder/assign-task', label: 'Assign Task', icon: <CgGoogleTasks /> },
       { path: '/founder/task-update', label: 'Task Update', icon: <VscTasklist /> },
       { path: '/founder/departement', label: 'Departement', icon: <RiFileList2Line /> },
+      { path: '/founder/daily-update-list', label: 'Daily Update', icon: <FaWpforms /> },
     ],
     Manager: [
       { path: '/manager', label: 'Dashboard', icon: <CiGrid41 /> },
@@ -39,10 +40,13 @@ export default function SideBar({ isOpen, toggleSidebar }) {
       { path: '/team-leader/task-list', label: 'Your Task', icon: <GrTasks /> },
       { path: '/team-leader/assign-task', label: 'Assign Task', icon: <CgGoogleTasks /> },
       { path: '/team-leader/task-update', label: 'Assign Task Update', icon: <VscTasklist /> },
+      { path: '/team-leader/daily-update-form', label: 'Daily Update Form', icon: < FaWpforms /> },
+      { path: '/team-leader/team-daily-update', label: 'Team Daily Update', icon: < FaWpforms /> },
     ],
     Employee: [
       { path: '/employee', label: 'Dashboard', icon: <CiGrid41 /> },
       { path: '/employee/task-list', label: 'Your Task', icon: <GrTasks /> },
+      { path: '/employee/daily-update-form', label: 'Daily Update Form', icon: < FaWpforms /> },
     ],
   }
 

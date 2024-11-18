@@ -11,6 +11,7 @@ import StaffDetail from '../pages/StaffDetail';
 import AssignTask from '../pages/AssignTask';
 import TaskUpdateList from '../pages/founder/TaskUpdateList';
 import AssignTaskDetails from '../pages/AssignTaskDetails';
+import DailyUpdateList from '../pages/DailyUpdateList';
 
 
 export default function FounderRoutes() {
@@ -65,6 +66,7 @@ export default function FounderRoutes() {
           <Route path="departement" element={<Department departmentData={departmentData} getDepartments={getDepartments} />} />
           <Route path="staffDeatils/:slug" element={<StaffDetail/>} />
           <Route path="assignTaskDetails/:slug" element={<AssignTaskDetails/>} />
+          <Route path="daily-update-list" element={<DailyUpdateList/>} />
         </Route>
       </Routes>
     </>

@@ -3,16 +3,15 @@ const Task = require("../models/task-model");
 
 const assignTask = async (req, res) => {
     try {
-        console.log("Request Body:", req.body);           // Log request body
-        console.log("Files Received:", req.files);        // Log files received
+
 
         const { title, description, deadline, assignerId, recipientId } = req.body;
 
         const assigner = await User.findById(assignerId);
-        console.log("Assigner Found:", assigner);         // Log assigner details
+
 
         const recipient = await User.findById(recipientId);
-        console.log("Recipient Found:", recipient);       // Log recipient details
+       // Log recipient details
 
         if (!assigner) return res.status(404).json({ message: 'Assigner not found.' });
         if (!recipient) return res.status(404).json({ message: 'Recipient not found.' });
@@ -21,7 +20,7 @@ const assignTask = async (req, res) => {
             name: file.originalname,
             url: `/uploads/${file.filename}`  // URL to access the file
         }));
-        console.log("Documents Array:", documents);      // Log documents array
+     // Log documents array
 
         const newTask = new Task({
             assignerId: assigner._id,
@@ -34,7 +33,6 @@ const assignTask = async (req, res) => {
         });
 
         await newTask.save();
-        console.log('Task saved successfully:', newTask); // Log saved task
         res.status(201).json({ message: 'Task assigned successfully', task: newTask });
     } catch (err) {
         console.error('Error in assignTask:', err);
@@ -45,10 +43,10 @@ const assignTask = async (req, res) => {
 
 const getAssignTask = async (req, res) => {
     try {
-        console.log("Fetching tasks for user:", req.params.userId);
+
         const tasks = await Task.find({ recipientId: req.params.userId }).populate('assignerId recipientId', 'username');
         
-        console.log("Tasks found:", tasks);
+
         
         if (tasks.length === 0) {
             return res.status(404).json({ message: "No tasks available for this user." });
@@ -67,8 +65,6 @@ const viewAssignedTasks = async (req, res) => {
         const tasks = await Task.find({ assignerId })
             .populate('recipientId', 'name email')
             .populate('assignerId', 'name email');
-
-        // tasks.forEach(task => console.log(`Task ID: ${task._id}, Updates:`, task.updates));
 
         if (!tasks || tasks.length === 0) {
             return res.status(404).json({ message: 'No tasks found for this assigner.' });

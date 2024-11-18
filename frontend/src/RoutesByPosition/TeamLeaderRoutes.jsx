@@ -12,6 +12,8 @@ import { useAuth } from '../authProvider/AuthProvider';
 import AddTeamMember from '../pages/teamLeader/AddTeamMember';
 import StaffDetail from '../pages/StaffDetail';
 import AssignTaskDetails from '../pages/AssignTaskDetails';
+import DailyUpdateFrom from '../pages/DailyUpdateFrom';
+import TeamDailyUpdate from '../pages/teamLeader/TeamDailyUpdate';
 
 export default function TeamLeaderRoutes() {
 
@@ -54,6 +56,8 @@ export default function TeamLeaderRoutes() {
           <Route path="assign-task" element={<AssignTask staff={staffData} />} />
           
           <Route path="task-update" element={<TaskUpdateList />} />          
+          <Route path="daily-update-form" element={<DailyUpdateFrom />} />  
+          <Route path="team-daily-update" element={<TeamDailyUpdate/>} />  
           <Route path="staffDeatils/:slug" element={<StaffDetail/>} />
           <Route path="assignTaskDetails/:slug" element={<AssignTaskDetails/>} />
         </Route>
