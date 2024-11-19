@@ -84,18 +84,18 @@ export default function Department({departmentData, getDepartments}) {
               <table className="w-full text-left border-collapse">
                 <thead className="text-base font-medium border-b">
                   <tr>
-                    <th scope="col" className="py-3 pr-5">No.</th>
-                    <th scope="col" className="py-3 pr-40">Department Name</th>
-                    <th scope="col" className="py-3 pr-8">Start Date</th>
+                    <th scope="col" className="py-3">No.</th>
+                    <th scope="col" className="py-3 ">Department Name</th>
+                    <th scope="col" className="py-3 ">Start Date</th>
                     <th scope="col" className="py-3 ">Action</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className=''>
                   {departmentData.map((item, index) => (
                     <tr key={item._id} className={`${index === departmentData.length -1 ? 'border-none' : 'border-b'} text-gray-900`}>
-                      <td className="py-4">{index + 1}</td>
-                      <td className="py-4">{item.title}</td>
-                      <td className="py-4">{new Date(item.createdAt).toLocaleDateString('en-CA')}</td>
+                      <td className="py-4  min-w-7">{index + 1}</td>
+                      <td className="py-4  min-w-[400px]">{item.title}</td>
+                      <td className="py-4 min-w-32">{new Date(item.createdAt).toLocaleDateString('en-CA')}</td>
                       <td className="py-4"><button onClick={() => deleteDepartement(item._id)}  className='bg-red-600 text-white text-sm font-semibold py-2 px-5'>Delete</button></td>
                     </tr>
                   ))}

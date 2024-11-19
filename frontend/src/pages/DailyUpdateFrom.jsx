@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PageHeader from '../component/PageHeader';
-import { FaWpforms } from 'react-icons/fa6';
 import Button from '../component/Button';
 
 import TextInput from '../component/TextInput';
 import { useAuth } from '../authProvider/AuthProvider';
+import { PiListPlusFill } from "react-icons/pi";
 
 export default function DailyUpdateForm() {
     const { token, user } = useAuth();
@@ -58,12 +58,12 @@ export default function DailyUpdateForm() {
     return (
         <>
             <div>
-                <PageHeader title='Daily Update Form' icon={<FaWpforms />} />
+                <PageHeader title='Daily Update Form' icon={<PiListPlusFill/>} />
             </div>
 
             <div className='grid grid-cols-12 gap-5'>
 
-                <div className="col-span-4 bg-white shadow shadow-black/5 h-fit rounded-lg px-5 py-7">
+                <div className="col-span-12 lg:col-span-4 bg-white shadow shadow-black/5 h-fit rounded-lg px-5 py-7">
                     <form onSubmit={handleUpdateSubmit} className='flex flex-col gap-5'>
                         <TextInput
                             type='text'
@@ -98,11 +98,11 @@ export default function DailyUpdateForm() {
                 </div>
 
 
-                <div className='col-span-8 '>
+                <div className='col-span-12 lg:col-span-8 '>
                     {dailyUpdates.length ? (
-                        <div className='grid grid-cols-3 gap-3'>
-                            {dailyUpdates.map((update) => (
-                                <div key={update._id} className="border  bg-white shadow shadow-black/5 rounded-lg p-4">
+                        <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+                            {dailyUpdates.slice(0,30).map((update) => (
+                                <div key={update._id} className="border  bg-white shadow shadow-black/5 rounded-lg p-4 h-fit">
                                    
                                     <h3 className='text-2xl font-semibold'>{update.projectName}</h3>
                                     <h5 className='text-base mt-3'>{update.description}</h5>

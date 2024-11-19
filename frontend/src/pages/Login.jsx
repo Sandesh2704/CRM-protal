@@ -84,7 +84,7 @@ export default function Login() {
                     toast.error(err.response.data.message);
                 }
             } else {
-                toast.error('Password is not Match');
+                toast.error(err);
             }
         }
     };

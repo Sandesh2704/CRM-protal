@@ -10,6 +10,7 @@ const TaskSchema = new mongoose.Schema({
     documents: [{ name: String, url: String }],
     updates: [
         {
+            status: String,
             description: String,
             updatedAt: { type: Date, default: Date.now }
         }

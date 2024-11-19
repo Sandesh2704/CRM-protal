@@ -1,36 +1,41 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import PageHeader from '../../component/PageHeader';
 import { FaAnglesLeft, FaAnglesRight, FaWpforms } from 'react-icons/fa6';
 import { useAuth } from '../../authProvider/AuthProvider';
-import PageHeader from '../../component/PageHeader';
-import { IoSearchOutline } from 'react-icons/io5';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import jsPDF from "jspdf";
-import "jspdf-autotable";
 import { toast } from 'react-toastify';
+import jsPDF from 'jspdf';
+import { IoSearchOutline } from 'react-icons/io5';
 
-export default function TeamDailyUpdate() {
-    const [teamDailyUpdates, setTeamDailyUpdates] = useState([]);
-    const [filteredUpdates, setFilteredUpdates] = useState([]);
+export default function DailyUpdateList() {
+
+
+    const [dailyUpdates, setDailyUpdates] = useState([]);
     const { token } = useAuth();
+
+    useEffect(() => {
+        const fetchUpdates = async () => {
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_DOMAIN_URL}/dailyUpdateManage/gat-daily-update`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                setDailyUpdates(response.data);
+            } catch (error) {
+                console.error('Error fetching updates:', error.response?.data?.message || error.message);
+            }
+        }
+        fetchUpdates();
+    }, []);
 
     const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
     const [query, setQuery] = useState('');
+    const [filteredUpdates, setFilteredUpdates] = useState([]);
 
-    // Fetch Team Updates
-    const fetchTeamDailyUpdates = async () => {
-        try {
-            const response = await axios.get(`${process.env.REACT_APP_DOMAIN_URL}/dailyUpdateManage/team-updates`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            setTeamDailyUpdates(response.data.updates);
-        } catch (error) {
-            console.error("Error fetching team updates:", error.response || error);
-        }
-    };
 
     // Filter updates by date and search query
     const filterUpdates = () => {
-        const filteredByDate = teamDailyUpdates.filter(
+        const filteredByDate = dailyUpdates.filter(
             (item) => new Date(item.createdAt).toISOString().split('T')[0] === currentDate
         );
 
@@ -44,13 +49,13 @@ export default function TeamDailyUpdate() {
         setFilteredUpdates(filteredByQuery);
     };
 
-    useEffect(() => {
-        fetchTeamDailyUpdates();
-    }, []);
+
 
     useEffect(() => {
         filterUpdates();
-    }, [teamDailyUpdates, currentDate, query]);
+    }, [dailyUpdates, currentDate, query]);
+
+
 
     const handleSearchChange = (e) => {
         setQuery(e.target.value);
@@ -84,7 +89,7 @@ export default function TeamDailyUpdate() {
             return;
         }
 
-        const doc = new jsPDF();
+        const doc = new jsPDF('landscape'); // Set orientation to landscape
         const pageWidth = doc.internal.pageSize.getWidth();
         const currentDate = new Date().toLocaleDateString('en-CA');
 
@@ -97,10 +102,11 @@ export default function TeamDailyUpdate() {
         doc.text(`Date: ${currentDate}`, 20, 25);
 
         // Prepare table data
-        const tableHeaders = ["Sn.", "Name", "Job Role", "Project Name", "Work Update"];
+        const tableHeaders = ["Sn.", "Name", "Department", "Job Role", "Project Name", "Work Update"];
         const tableRows = filteredUpdates.map((item, index) => [
             index + 1,
             item.user.username,
+            item.user.department,
             item.user.jobRole,
             item.projectName,
             item.description,
@@ -116,27 +122,30 @@ export default function TeamDailyUpdate() {
             styles: {
                 fontSize: 10, // Reduce font size for better fit
                 cellPadding: 2, // Reduce padding for compactness
+                overflow: 'linebreak', // Ensure text wraps if necessary
             },
             columnStyles: {
                 0: { cellWidth: 10 }, // Sr.No.
-                1: { cellWidth: 30 }, // Name
-                2: { cellWidth: 35 }, // Job Role
-                3: { cellWidth: 40 }, // Project Name
-                4: { cellWidth: `100%` }, // Work Update
+                1: { cellWidth: 40 }, // Name
+                2: { cellWidth: 50 }, // Department
+                3: { cellWidth: 40 }, // Job Role
+                4: { cellWidth: 56 }, // Project Name
+                5: { cellWidth: '100%' }, // Work Update
             },
         });
 
         // Download the PDF
         doc.save(`team_daily_updates_${currentDate}.pdf`);
     };
+
     const downloadAllPDF = () => {
-        if (teamDailyUpdates.length === 0) {
+        if (dailyUpdates.length === 0) {
             toast.error('No data available to download', { position: 'top-right', autoClose: 3000 });
             return;
         }
 
-        const doc = new jsPDF();
-        const groupedUpdates = teamDailyUpdates.reduce((acc, item) => {
+        const doc = new jsPDF('landscape'); // Set orientation to landscape
+        const groupedUpdates = dailyUpdates.reduce((acc, item) => {
             const date = new Date(item.createdAt).toLocaleDateString('en-CA');
             if (!acc[date]) acc[date] = [];
             acc[date].push(item);
@@ -155,10 +164,11 @@ export default function TeamDailyUpdate() {
             doc.text(`Date: ${date}`, 15, startY);
 
             // Prepare table data for the date
-            const tableHeaders = ["Sn.", "Name", "Job Role", "Project Name", "Work Update"];
+            const tableHeaders = ["Sn.", "Name", "Department", "Job Role", "Project Name", "Work Update"];
             const tableRows = groupedUpdates[date].map((item, index) => [
                 index + 1,
                 item.user.username,
+                item.user.department,
                 item.user.jobRole,
                 item.projectName,
                 item.description,
@@ -170,18 +180,19 @@ export default function TeamDailyUpdate() {
                 body: tableRows,
                 startY: startY + 3, // Add margin above table
                 theme: "grid",
-                margin: { left: 10, right: 10 }, // Reduced X-axis margins
-                styles: { fontSize: 10, cellPadding: 2 }, // Reduce font size and padding
+                margin: { left: 10, right: 10 },
+                styles: { fontSize: 10, cellPadding: 2 },
                 columnStyles: {
                     0: { cellWidth: 10 }, // Sr.No.
-                    1: { cellWidth: 30 }, // Name
-                    2: { cellWidth: 40 }, // Job Role
-                    3: { cellWidth: 40 }, // Project Name
-                    4: { cellWidth: `100%` }, // Work Update
+                    1: { cellWidth: 40 }, // Name
+                    2: { cellWidth: 50 }, // Department
+                    3: { cellWidth: 40 }, // Job Role
+                    4: { cellWidth: 56 }, // Project Name
+                    5: { cellWidth: '100%' }, // Work Update
                 },
                 bodyStyles: { valign: "top" }, // Align text to the top
                 willDrawCell: (data) => {
-                    if (data.column.dataKey === 4 && data.cell.raw) {
+                    if (data.column.dataKey === 5 && data.cell.raw) {
                         // Ensure text wraps properly in "Work Update"
                         data.cell.styles.overflow = 'linebreak';
                     }
@@ -189,7 +200,7 @@ export default function TeamDailyUpdate() {
             });
 
             // Adjust startY for the next section and add margin after the table
-            startY = doc.autoTable.previous.finalY + 10; // Add 15px margin below table
+            startY = doc.autoTable.previous.finalY + 10; // Add 10px margin below table
             if (startY > doc.internal.pageSize.height - 30) {
                 doc.addPage();
                 startY = 25;
@@ -206,7 +217,7 @@ export default function TeamDailyUpdate() {
             return;
         }
 
-        const doc = new jsPDF();
+        const doc = new jsPDF('landscape'); // Set orientation to landscape
         const pageWidth = doc.internal.pageSize.getWidth();
         const currentDate = new Date().toLocaleDateString('en-CA');
 
@@ -219,10 +230,11 @@ export default function TeamDailyUpdate() {
         doc.text(`Date: ${currentDate}`, 20, 25);
 
         // Prepare table data
-        const tableHeaders = ["Sn.", "Name", "Job Role", "Project Name", "Work Update"];
+        const tableHeaders = ["Sn.", "Profile Name", "Department", "Job Role", "Project Name", "Work Update"];
         const tableRows = filteredUpdates.map((item, index) => [
             index + 1,
             item.user.username,
+            item.user.department,
             item.user.jobRole,
             item.projectName,
             item.description,
@@ -238,13 +250,14 @@ export default function TeamDailyUpdate() {
                 cellPadding: 2,
             },
             theme: "grid",
-            margin: { left: 10, right: 10 }, // Reduced X-axis margins
+            margin: { left: 10, right: 10 },
             columnStyles: {
                 0: { cellWidth: 10 }, // Sr.No.
-                1: { cellWidth: 30 }, // Name
-                2: { cellWidth: 30 }, // Job Role
-                3: { cellWidth: 35 }, // Project Name
-                4: { cellWidth: `100%` }, // Work Update
+                1: { cellWidth: 40 }, // Name
+                2: { cellWidth: 50 }, // Department
+                3: { cellWidth: 40 }, // Job Role
+                4: { cellWidth: 56 }, // Project Name
+                5: { cellWidth: '100%' }, // Work Update
             },
         });
 
@@ -275,12 +288,12 @@ export default function TeamDailyUpdate() {
 
 
 
-
     return (
         <>
             <div>
-                <PageHeader title='Daily Update History' icon={<FaWpforms />} />
+                <PageHeader title='Daily Update' icon={<FaWpforms />} />
             </div>
+
 
             <div className='flex justify-between flex-wrap gap-4 bg-white py-4 px-4 rounded-lg shadow shadow-black/5'>
                 {/* Date Picker */}
@@ -310,13 +323,13 @@ export default function TeamDailyUpdate() {
 
 
             <div className='bg-white my-6 py-4 px-4 rounded-lg shadow shadow-black/5 overflow-x-auto'>
-                <table className="w-full table-auto text-sm text-left border-collapse">
+                <table className="table-auto text-sm text-left border-collapse">
                     <thead className="text-sm font-medium border-b">
                         <tr>
-                            <th scope="col" className="py-3 min-w-12">Sn.</th>
-                            <th scope="col" className="py-3 min-w-44">Profile Name</th>
+                            <th scope="col" className="py-3 min-w-10">Sn.</th>
+                            <th scope="col" className="py-3 min-w-48">Profile Name</th>
                             <th scope="col" className="py-3 min-w-44">Job Role</th>
-                            <th scope="col" className="py-3 min-w-52">Project Name</th>
+                            <th scope="col" className="py-3 min-w-56">Project Name</th>
                             <th scope="col" className="py-3 min-w-[300px]">Work Update</th>
                             <th scope="col" className="py-3 min-w-24">Date</th>
                         </tr>
@@ -344,18 +357,19 @@ export default function TeamDailyUpdate() {
                             filteredUpdates.map((item, index) => {
                                 const { projectName, user, _id, description, createdAt } = item;
                                 return (
-                                    <tr className={`  align-top ${index === filteredUpdates.length - 1 ? "border-none" : "border-b"}`} key={_id}>
+                                    <tr className={`align-top ${index === filteredUpdates.length - 1 ? "border-none" : "border-b"}`} key={_id}>
                                         <td className="py-4 font-medium text-gray-900 ">{index + 1}</td>
-                                        <td
-                                            className="py-4 font-medium text-gray-900"
-                                            dangerouslySetInnerHTML={{ __html: highlightMatch(user.username) }}
-                                        />
 
-
-                                        <td className="py-4">{user.jobRole}</td>
-                                        <td className="py-4">{projectName}</td>
-                                        <td className="py-4 pr-6">{description}</td>
-                                        <td className="py-4">{new Date(createdAt).toLocaleDateString('en-CA')}</td>
+                                        <td className="py-4 pr-4">
+                                            <div className='flex flex-col'>
+                                                <h1 className='font-medium text-sm text-gray-900' dangerouslySetInnerHTML={{ __html: highlightMatch(user.username) }} />
+                                                <span className='text-xs italic text-gray-700'>({user.department})</span>
+                                            </div>
+                                        </td>
+                                        <td className="py-4 pr-4">{user.jobRole}</td>
+                                        <td className="py-4 pr-5 text-justify">{projectName}</td>
+                                        <td className="py-4 pr-6 text-justify">{description}</td>
+                                        <td className="py-4 ">{new Date(createdAt).toLocaleDateString('en-CA')}</td>
                                     </tr>
                                 );
                             })
@@ -368,7 +382,7 @@ export default function TeamDailyUpdate() {
             <div className="flex flex-col  md:flex-row justify-between gap-4">
 
 
-                <div className="flex justify-between items-center gap-2 mt-2">
+                <div className="flex justify-between items-center gap-2 ">
                     <button
                         className="flex items-center bg-white py-2 px-4 rounded-lg shadow shadow-black/5 gap-1"
                         onClick={handlePreviousDate}>
@@ -390,11 +404,10 @@ export default function TeamDailyUpdate() {
                         className="flex items-center bg-purple-700 h-fit  bg-blue-700 text-white py-2 px-4 rounded-lg shadow shadow-black/5 gap-1"
                         onClick={downloadPDF}
                     >
-                       <div className='flex gap-2'>
-                        <h1 className='text-sm font-semibold'>Download </h1>
-                        <span className='text-sm italic '> "{currentDate}"</span>
+                        <div className='flex gap-2'>
+                            <h1 className='text-sm font-semibold'>Download </h1>
+                            <span className='text-sm italic '> "{currentDate}"</span>
                         </div>
-                       
                     </button>
                     <button
                         className="flex items-center bg-pink-600 h-fit  text-white py-2 px-4 rounded-lg shadow shadow-black/5 gap-1"
@@ -411,6 +424,5 @@ export default function TeamDailyUpdate() {
                 </div>
             </div>
         </>
-    );
+    )
 }
-

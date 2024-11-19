@@ -6,6 +6,7 @@ import { MdOutlineDownloading } from 'react-icons/md';
 import Button from '../component/Button';
 import { TbListDetails, TbSubtask } from 'react-icons/tb';
 import PageHeader from '../component/PageHeader';
+import { toast } from 'react-toastify';
 
 export default function YourTaskDetails() {
     const { slug } = useParams();  // Corrected to use "slug"
@@ -13,7 +14,7 @@ export default function YourTaskDetails() {
     const location = useLocation();
     const [task, setTask] = useState(location.state?.assignTaskDetails || null);
     const [updateDescription, setUpdateDescription] = useState('');
-    const [taskStatus, setTaskStatus] = useState(task?.status || 'pending');
+    const [taskStatus, setTaskStatus] = useState('');
 
     useEffect(() => {
 
@@ -37,22 +38,36 @@ export default function YourTaskDetails() {
         }
     }, [user, token, slug, task]);
 
+
     const handleUpdateSubmit = async () => {
+        // Validation
+        if (updateDescription.length < 20) {
+            toast.error("Description must be at least 20 characters long.");
+            return;
+        }
+
+        if (!taskStatus || !['pending', 'complete', 'delay'].includes(taskStatus)) {
+            toast.error("Please select a valid status (pending, complete, or delay).");
+            return;
+        }
+
         try {
             const response = await axios.post(
-                `${process.env.REACT_APP_DOMAIN_URL}/taskManage/task/update/${slug}`,  // Using slug
+                `${process.env.REACT_APP_DOMAIN_URL}/taskManage/task/update/${slug}`,
                 { status: taskStatus, updateMessage: updateDescription },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             setTask(response.data.task);
             setUpdateDescription('');
-            setTaskStatus('pending');
+            setTaskStatus('');
+            toast.success("Task updated successfully!");
         } catch (error) {
             console.error("Error updating task:", error);
+            toast.error("Failed to update the task.");
         }
     };
 
-    if (!task) return <p>Loading task details...</p>;
+
 
     const { assignerId, deadline, title, description, updates, status, documents } = task;
 
@@ -67,9 +82,16 @@ export default function YourTaskDetails() {
                 <div>
                     <div className='bg-white shadow shadow-black/5 rounded-2xl px-4 py-6'>
 
+
                         <div className='flex items-center gap-2'>
-                            <div className={`rounded-full p-[3px] ${status === 'Pending' ? 'bg-red-500' : 'bg-green-600'}`} />
-                            <p className={`text-sm font-semibold ${status === 'Pending' ? 'text-red-500' : 'text-green-600'}`}>
+                            <div
+                                className={`rounded-full p-[3px] ${status === 'pending' ? 'bg-red-500' :
+                                    status === 'complete' ? 'bg-green-600' :
+                                        status === 'delay' ? 'bg-blue-500' : ''}`}
+                            />
+                            <p className={`text-sm font-semibold ${status === 'pending' ? 'text-red-500' :
+                                status === 'complete' ? 'text-green-600' :
+                                    status === 'delay' ? 'text-blue-500' : ''}`}>
                                 {status.charAt(0).toUpperCase() + status.slice(1)}
                             </p>
                         </div>
@@ -77,8 +99,19 @@ export default function YourTaskDetails() {
                         <p>{description}...</p>
 
 
-                        <p className='mt-4'>Deadline: {new Date(deadline).toLocaleDateString()}</p>
-                        <p>Assigned by: {assignerId?.username} {assignerId?.email}</p>
+
+                        <p className='mt-4 text-sm  text-gray-700'>Deadline: {new Date(deadline).toLocaleDateString()}</p>
+                                         
+            
+
+            <div className='text-sm flex gap-1  text-gray-700 '>
+                                                <p>Assigned to: </p>
+                                                <span className='font-semibold'>{assignerId?.username}</span>
+                                                <div className='italic ' >
+                                                    <span >{assignerId?.email}</span>
+                                                </div>
+
+                                            </div>
                     </div>
 
                     {documents && documents.length > 0 && (
@@ -115,7 +148,7 @@ export default function YourTaskDetails() {
 
                         </span>
                         <h1 className='text-lg font-semibold gap-1   rounded-lg '>
-                            Updates
+                            Updates Histroy
                         </h1>
 
                     </div>
@@ -124,9 +157,25 @@ export default function YourTaskDetails() {
                         <div className='flex flex-col gap-5'>
                             {
                                 updates.slice().reverse().map((item, index) => (
-                                    <div key={item} className='bg-white shadow shadow-black/5 rounded-lg px-4 py-6'>
-                                        <span className='text-sm text-gray-600 mb-2' >{new Date(item.updatedAt).toLocaleDateString()}</span>
-                                        <p className='text-lg'>{item.description}</p>
+
+                                    <div key={index} className='bg-white shadow shadow-black/5 rounded-lg px-4 py-6'>
+                                        <div className='flex justify-between'>
+                                            <div className='flex items-center gap-2'>
+                                                <div
+                                                    className={`rounded-full p-[3px] ${item.status === 'pending' ? 'bg-red-500' :
+                                                        item.status === 'complete' ? 'bg-green-600' :
+                                                            item.status === 'delay' ? 'bg-blue-500' : ''}`}
+                                                />
+                                                <p className={`text-sm font-semibold ${item.status === 'pending' ? 'text-red-500' :
+                                                    item.status === 'complete' ? 'text-green-600' :
+                                                        item.status === 'delay' ? 'text-blue-500' : ''}`}>
+                                                      {item.status} {/* Added fallback */}
+                                                </p>
+                                            </div>
+                                            <span className='text-sm text-gray-600 ' >{new Date(item.updatedAt).toLocaleDateString()}</span>
+                                        </div>
+
+                                        <p className='text-lg mt-2'>{item.description}</p>
                                     </div>
                                 ))
                             }
@@ -137,34 +186,53 @@ export default function YourTaskDetails() {
                         </div>
                     )}
 
-                    <div className="bg-white shadow shadow-black/5 rounded-2xl px-4 py-4">
-                        <from >
-                            <textarea
-                                type="text"
-                                placeholder="Enter update description..."
-                                value={updateDescription}
-                                onChange={(e) => setUpdateDescription(e.target.value)}
-                                required
-                                className="text-theme1 placeholder:text-zinc-500  outline-none bg-white w-full text-sm text-gray-900 py-[16px] px-6 rounded-sm border rounded"
-                                cols={7}
-                                rows="3"
-                            />
-                            <div className="flex items-center mb-7 mt-3">
-                                <input
-                                    type="checkbox"
-                                    checked={taskStatus === 'complete'}
-                                    onChange={() => setTaskStatus(taskStatus === 'pending' ? 'complete' : 'pending')}
-                                    className="mr-2"
+                    {task.status !== 'complete' && (
+
+                        <div className="bg-white shadow shadow-black/5 rounded-2xl px-4 py-4">
+                            <from >
+                                <textarea
+                                    type="text"
+                                    placeholder="Enter update description..."
+                                    value={updateDescription}
+                                    onChange={(e) => setUpdateDescription(e.target.value)}
+                                    required
+                                    className="text-theme1 placeholder:text-zinc-500  outline-none bg-white w-full text-sm text-gray-900 py-[16px] px-6 rounded-sm border rounded"
+                                    cols={7}
+                                    rows="3"
                                 />
-                                <label>Complete</label>
-                            </div>
-                            <button
-                                onClick={() => handleUpdateSubmit(task._id)}
-                            >
-                                <Button title=' Submit Update' />
-                            </button>
-                        </from>
-                    </div>
+
+
+                                <div className="flex items-center mb-7 mt-3">
+                                    <input
+                                        type="radio"
+                                        checked={taskStatus === 'pending'}
+                                        onChange={() => setTaskStatus('pending')}
+                                        className="mr-2"
+                                    />
+                                    <label>Pending</label>
+                                    <input
+                                        type="radio"
+                                        checked={taskStatus === 'complete'}
+                                        onChange={() => setTaskStatus('complete')}
+                                        className="mr-2 ml-4"
+                                    />
+                                    <label>Complete</label>
+                                    <input
+                                        type="radio"
+                                        checked={taskStatus === 'delay'}
+                                        onChange={() => setTaskStatus('delay')}
+                                        className="mr-2 ml-4"
+                                    />
+                                    <label>Delay</label>
+                                </div>
+                                <button
+                                    onClick={() => handleUpdateSubmit(task._id)}
+                                >
+                                    <Button title=' Submit Update' />
+                                </button>
+                            </from>
+                        </div>
+                    )}
                 </div>
             </div>
         </>

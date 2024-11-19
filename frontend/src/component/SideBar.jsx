@@ -1,5 +1,5 @@
 import logo from '../assets/crm-logo.png'
-import { NavLink, Link, useLocation  } from 'react-router-dom';
+import { Link, useLocation  } from 'react-router-dom';
 import { CiGrid41 } from 'react-icons/ci';
 import { TbPinnedFilled } from 'react-icons/tb';
 import { LuUsers2 } from "react-icons/lu";
@@ -11,6 +11,7 @@ import { CgGoogleTasks } from 'react-icons/cg';
 import { SlCalender } from "react-icons/sl";
 import { GrTasks } from "react-icons/gr";
 import { FaWpforms } from "react-icons/fa6";
+import { PiListPlusFill } from 'react-icons/pi';
 
 export default function SideBar({ isOpen, toggleSidebar }) {
   const { userJobPosition } = useAuth();
@@ -40,13 +41,13 @@ export default function SideBar({ isOpen, toggleSidebar }) {
       { path: '/team-leader/task-list', label: 'Your Task', icon: <GrTasks /> },
       { path: '/team-leader/assign-task', label: 'Assign Task', icon: <CgGoogleTasks /> },
       { path: '/team-leader/task-update', label: 'Assign Task Update', icon: <VscTasklist /> },
-      { path: '/team-leader/daily-update-form', label: 'Daily Update Form', icon: < FaWpforms /> },
-      { path: '/team-leader/team-daily-update', label: 'Team Daily Update', icon: < FaWpforms /> },
+      { path: '/team-leader/daily-update-form', label: 'Daily Update Form', icon: < PiListPlusFill /> },
+      { path: '/team-leader/team-daily-update', label: 'Team Daily Update', icon: <FaWpforms/> },
     ],
     Employee: [
       { path: '/employee', label: 'Dashboard', icon: <CiGrid41 /> },
       { path: '/employee/task-list', label: 'Your Task', icon: <GrTasks /> },
-      { path: '/employee/daily-update-form', label: 'Daily Update Form', icon: < FaWpforms /> },
+      { path: '/employee/daily-update-form', label: 'Daily Update Form', icon: < PiListPlusFill /> },
     ],
   }
 
@@ -104,31 +105,3 @@ const MenuItem = ({ URL, icon, label, isOpen }) => {
     </Link>
   );
 };
-
-// const MenuItem = ({ URL, icon, label, isOpen }) => {
-//   const location = useLocation();
-//   const isActive = location.pathname === URL;
-
-
-//   return (
-//     <NavLink
-//       to={URL}
-//       className={({ isActive }) => ` flex items-center group 
-//         ${!isOpen ? 'justify-center py-2' : 'py-2 px-3 justify-between'} 
-//         ${isActive ? 'bg-gradiant text-white  rounded-lg ' : 'text-gray-600 hover:text-[#a54de3]'}
-//         `}
-//       end>
-//       <div className='flex items-center'>
-//         <span className={`text-xl font-bold ${!isOpen ? 'hidden lg:flex' : ''} duration-600`}>
-//           {icon}
-//         </span>
-//         {isOpen && <span className="ml-3 text-base">{label}</span>}
-//       </div>
-//       {isOpen &&
-//         <span className={`hidden group-hover:flex duration-300 text-lg `}>
-//           <TbPinnedFilled />
-//         </span>
-//       }
-//     </NavLink>
-//   );
-// }

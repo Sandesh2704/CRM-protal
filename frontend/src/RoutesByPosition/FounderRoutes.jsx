@@ -11,7 +11,7 @@ import StaffDetail from '../pages/StaffDetail';
 import AssignTask from '../pages/AssignTask';
 import TaskUpdateList from '../pages/founder/TaskUpdateList';
 import AssignTaskDetails from '../pages/AssignTaskDetails';
-import DailyUpdateList from '../pages/DailyUpdateList';
+import DailyUpdateList from '../pages/founder/DailyUpdateList';
 
 
 export default function FounderRoutes() {
