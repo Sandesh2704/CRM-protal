@@ -1,34 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../authProvider/AuthProvider';
 import PageHeader from '../../component/PageHeader';
 import { VscTasklist } from 'react-icons/vsc';
 
-export default function TaskList() {
-    const { user, token } = useAuth();
-    const [tasks, setTasks] = useState([]);
-    useEffect(() => {
-        const fetchTasks = async () => {
-            try {
-                console.log("Fetching tasks for user:", user._id);
-                const response = await axios.get(`${process.env.REACT_APP_DOMAIN_URL}/taskManage/get-assign-task/${user._id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                console.log("Tasks fetched:", response.data);
-                setTasks(response.data);
-            } catch (error) {
-                console.error("Error fetching tasks:", error);
-            }
-        };
-
-        if (user._id) {
-            fetchTasks();
-        }
-    }, [user, token]);
-
+export default function YourTaskList({ yourTasks }) {
 
 
     // Function to format assignment date for grouping
@@ -45,12 +19,15 @@ export default function TaskList() {
     };
 
     // Group tasks by assignment date (createdAt)
-    const groupedTasks = tasks.reduce((acc, task) => {
+    const groupedTasks = yourTasks.reduce((acc, task) => {
         const dateKey = formatAssignmentDate(task.createdAt);
         if (!acc[dateKey]) acc[dateKey] = [];
         acc[dateKey].push(task);
         return acc;
     }, {});
+
+
+
 
     return (
         <>
@@ -69,7 +46,7 @@ export default function TaskList() {
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5">
                             {tasks.map((task) => {
-                                const { deadline, title, description, _id, status, assignerId } = task;
+                                const { deadline, title, description, _id, status, assignerId            } = task;
                                 return (
                                     <div key={_id} className="bg-white shadow shadow-black/5 rounded-2xl px-4 py-6">
                                         <div className=" h-fit">
@@ -89,17 +66,16 @@ export default function TaskList() {
 
 
                                             <div className='text-sm flex gap-1  text-gray-700 '>
-                                                <p>Assigned to: </p>
+                                                <p>Assigned by: </p>
                                                 <span className='font-semibold'>{assignerId?.username}</span>
                                                 <div className='italic ' >
-                                                    <span >{assignerId?.email}</span>
+                                                    <span >({assignerId?.email})</span>
                                                 </div>
                                             </div>
 
-
                                             <div className="text-center mt-3">
                                                 <Link
-                                                    to={`/manager/yourTaskDeatils/${_id}`}
+                                                    to={`/employee/yourTaskDetails/${_id}`}
                                                     state={{ assignTaskDetails: task }}
                                                     className="text-xs text-indigo-500 italic hover:underline hover:text-indigo-600 font-medium"
                                                 >

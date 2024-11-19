@@ -57,7 +57,7 @@ export default function FounderRoutes() {
         {/* Parent route with Layout component */}
         <Route path="/" element={<Layout />}>
           {/* Nested routes */}
-          <Route index element={<Dashboard managers={managers} employees={employees} />} />
+          <Route index element={<Dashboard managers={managers} employees={employees} departmentData={departmentData}/>} />
           <Route path="profile" element={<Profile />} />
           <Route path="employees" element={<AllEmployes employees={employees} />} />
           <Route path="add-new-staff" element={<AddNewManager departmentData={departmentData} fetchUsers={fetchUsers} />} />

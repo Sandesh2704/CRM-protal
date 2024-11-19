@@ -44,7 +44,9 @@ const assignTask = async (req, res) => {
 const getAssignTask = async (req, res) => {
     try {
 
-        const tasks = await Task.find({ recipientId: req.params.userId }).populate('assignerId recipientId', 'username');
+        const tasks = await Task.find({ recipientId: req.params.userId })
+        .populate('recipientId', 'username email')
+        .populate('assignerId', 'username email');
 
 
 

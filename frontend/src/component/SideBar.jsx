@@ -1,5 +1,5 @@
 import logo from '../assets/crm-logo.png'
-import { Link, useLocation  } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { CiGrid41 } from 'react-icons/ci';
 import { TbPinnedFilled } from 'react-icons/tb';
 import { LuUsers2 } from "react-icons/lu";
@@ -42,7 +42,7 @@ export default function SideBar({ isOpen, toggleSidebar }) {
       { path: '/team-leader/assign-task', label: 'Assign Task', icon: <CgGoogleTasks /> },
       { path: '/team-leader/task-update', label: 'Assign Task Update', icon: <VscTasklist /> },
       { path: '/team-leader/daily-update-form', label: 'Daily Update Form', icon: < PiListPlusFill /> },
-      { path: '/team-leader/team-daily-update', label: 'Team Daily Update', icon: <FaWpforms/> },
+      { path: '/team-leader/team-daily-update', label: 'Team Daily Update', icon: <FaWpforms /> },
     ],
     Employee: [
       { path: '/employee', label: 'Dashboard', icon: <CiGrid41 /> },
@@ -54,7 +54,7 @@ export default function SideBar({ isOpen, toggleSidebar }) {
   return (
     <>
       <div
-        className={`z-40 bg-white border-r-2  transition-all duration-300 ${isOpen ? 'w-[80%] sm:w-[252px] block' : 'hidden lg:block lg:w-16'}   h-screen fixed`}
+        className={`z-10 bg-white border-r-2  transition-all duration-300 ${isOpen ? 'w-[80%] sm:w-[252px] block' : 'hidden lg:block lg:w-16'}   h-screen fixed`}
         style={{ borderColor: `linear-gradient(266deg, #a54de3 32%, #ff08e9 71%)` }}>
         <div className={` flex items-center  shadow shadow-white/5 justify-center border-b h-[4.3rem] py-1`}>
           <div className={`${!isOpen ? 'hidden' : ''}`}>

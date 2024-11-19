@@ -8,7 +8,7 @@ import { TbListDetails, TbSubtask } from 'react-icons/tb';
 import PageHeader from '../component/PageHeader';
 import { toast } from 'react-toastify';
 
-export default function YourTaskDetails() {
+export default function YourTaskDetails({ fetchTasks }) {
     const { slug } = useParams();  // Corrected to use "slug"
     const { user, token } = useAuth();
     const location = useLocation();
@@ -17,7 +17,6 @@ export default function YourTaskDetails() {
     const [taskStatus, setTaskStatus] = useState('');
 
     useEffect(() => {
-
         const fetchTaskDetails = async () => {
             if (!task) { // Only fetch if task details are not already passed
                 try {
@@ -46,7 +45,7 @@ export default function YourTaskDetails() {
             return;
         }
 
-        if (!taskStatus || !['pending', 'complete', 'delay'].includes(taskStatus)) {
+        if (!taskStatus || !['Pending', 'Complete', 'Delay'].includes(taskStatus)) {
             toast.error("Please select a valid status (pending, complete, or delay).");
             return;
         }
@@ -61,6 +60,7 @@ export default function YourTaskDetails() {
             setUpdateDescription('');
             setTaskStatus('');
             toast.success("Task updated successfully!");
+            fetchTasks()
         } catch (error) {
             console.error("Error updating task:", error);
             toast.error("Failed to update the task.");
@@ -85,13 +85,13 @@ export default function YourTaskDetails() {
 
                         <div className='flex items-center gap-2'>
                             <div
-                                className={`rounded-full p-[3px] ${status === 'pending' ? 'bg-red-500' :
-                                    status === 'complete' ? 'bg-green-600' :
-                                        status === 'delay' ? 'bg-blue-500' : ''}`}
+                                className={`rounded-full p-[3px] ${status === 'Pending' ? 'bg-red-500' :
+                                    status === 'Complete' ? 'bg-green-600' :
+                                        status === 'Delay' ? 'bg-blue-500' : ''}`}
                             />
-                            <p className={`text-sm font-semibold ${status === 'pending' ? 'text-red-500' :
-                                status === 'complete' ? 'text-green-600' :
-                                    status === 'delay' ? 'text-blue-500' : ''}`}>
+                            <p className={`text-sm font-semibold ${status === 'Pending' ? 'text-red-500' :
+                                status === 'Complete' ? 'text-green-600' :
+                                    status === 'Delay' ? 'text-blue-500' : ''}`}>
                                 {status.charAt(0).toUpperCase() + status.slice(1)}
                             </p>
                         </div>
@@ -101,17 +101,19 @@ export default function YourTaskDetails() {
 
 
                         <p className='mt-4 text-sm  text-gray-700'>Deadline: {new Date(deadline).toLocaleDateString()}</p>
-                                         
-            
 
-            <div className='text-sm flex gap-1  text-gray-700 '>
-                                                <p>Assigned to: </p>
-                                                <span className='font-semibold'>{assignerId?.username}</span>
-                                                <div className='italic ' >
-                                                    <span >{assignerId?.email}</span>
-                                                </div>
 
-                                            </div>
+
+                        <div className='text-sm flex gap-1  text-gray-700 '>
+                            <p>Assigned bt: </p>
+                            <span className='font-semibold'>{assignerId?.username}</span>
+                            <div className='italic ' >
+                                <span >{assignerId?.email}</span>
+                            </div>
+
+
+
+                        </div>
                     </div>
 
                     {documents && documents.length > 0 && (
@@ -162,14 +164,14 @@ export default function YourTaskDetails() {
                                         <div className='flex justify-between'>
                                             <div className='flex items-center gap-2'>
                                                 <div
-                                                    className={`rounded-full p-[3px] ${item.status === 'pending' ? 'bg-red-500' :
-                                                        item.status === 'complete' ? 'bg-green-600' :
-                                                            item.status === 'delay' ? 'bg-blue-500' : ''}`}
+                                                    className={`rounded-full p-[3px] ${item.status === 'Pending' ? 'bg-red-500' :
+                                                        item.status === 'Complete' ? 'bg-green-600' :
+                                                            item.status === 'Delay' ? 'bg-blue-500' : ''}`}
                                                 />
-                                                <p className={`text-sm font-semibold ${item.status === 'pending' ? 'text-red-500' :
-                                                    item.status === 'complete' ? 'text-green-600' :
-                                                        item.status === 'delay' ? 'text-blue-500' : ''}`}>
-                                                      {item.status} {/* Added fallback */}
+                                                <p className={`text-sm font-semibold ${item.status === 'Pending' ? 'text-red-500' :
+                                                    item.status === 'Complete' ? 'text-green-600' :
+                                                        item.status === 'Delay' ? 'text-blue-500' : ''}`}>
+                                                    {item.status} {/* Added fallback */}
                                                 </p>
                                             </div>
                                             <span className='text-sm text-gray-600 ' >{new Date(item.updatedAt).toLocaleDateString()}</span>
@@ -186,7 +188,7 @@ export default function YourTaskDetails() {
                         </div>
                     )}
 
-                    {task.status !== 'complete' && (
+                    {task.status !== 'Complete' && (
 
                         <div className="bg-white shadow shadow-black/5 rounded-2xl px-4 py-4">
                             <from >
@@ -205,22 +207,22 @@ export default function YourTaskDetails() {
                                 <div className="flex items-center mb-7 mt-3">
                                     <input
                                         type="radio"
-                                        checked={taskStatus === 'pending'}
-                                        onChange={() => setTaskStatus('pending')}
+                                        checked={taskStatus === 'Pending'}
+                                        onChange={() => setTaskStatus('Pending')}
                                         className="mr-2"
                                     />
                                     <label>Pending</label>
                                     <input
                                         type="radio"
-                                        checked={taskStatus === 'complete'}
-                                        onChange={() => setTaskStatus('complete')}
+                                        checked={taskStatus === 'Complete'}
+                                        onChange={() => setTaskStatus('Complete')}
                                         className="mr-2 ml-4"
                                     />
                                     <label>Complete</label>
                                     <input
                                         type="radio"
-                                        checked={taskStatus === 'delay'}
-                                        onChange={() => setTaskStatus('delay')}
+                                        checked={taskStatus === 'Delay'}
+                                        onChange={() => setTaskStatus('Delay')}
                                         className="mr-2 ml-4"
                                     />
                                     <label>Delay</label>

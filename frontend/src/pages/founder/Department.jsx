@@ -22,7 +22,11 @@ export default function Department({departmentData, getDepartments}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting data:", newDepartmentDeta);
+    
+    if (newDepartmentDeta.title.length < 20) {
+      toast.error("Department title must be at least 4 characters long.");
+      return;
+  }
 
     try {
       await axios.post(`${process.env.REACT_APP_DOMAIN_URL}/departementManage/add-new-department`, newDepartmentDeta, {
@@ -91,7 +95,7 @@ export default function Department({departmentData, getDepartments}) {
                   </tr>
                 </thead>
                 <tbody className=''>
-                  {departmentData.map((item, index) => (
+                  {departmentData.slice().reverse().map((item, index) => (
                     <tr key={item._id} className={`${index === departmentData.length -1 ? 'border-none' : 'border-b'} text-gray-900`}>
                       <td className="py-4  min-w-7">{index + 1}</td>
                       <td className="py-4  min-w-[400px]">{item.title}</td>

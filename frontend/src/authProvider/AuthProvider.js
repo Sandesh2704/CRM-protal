@@ -40,19 +40,25 @@ const AuthProvider = ({ children }) => {
         }
     }, [token]); // `token` is the dependency
 
+
+
+
     // Run user authentication whenever the token changes
     useEffect(() => {
         userAuthentication();
     }, [userAuthentication]);  // Add `userAuthentication` as a dependency
 
     const userJobPosition = user ? user.jobPosition : null;
-console.log('userJobPosition', userJobPosition)
+
     return (
-        <AuthContext.Provider value={{ storeTokenInLS, LogoutUser, user, token, isLoggedIn, userJobPosition}}>
+        <AuthContext.Provider value={{ storeTokenInLS, LogoutUser, user, token, isLoggedIn, userJobPosition, userAuthentication }}>
             {children}
         </AuthContext.Provider>
     );
 };
+
+
+
 
 const useAuth = () => {
     const authContextValue = useContext(AuthContext);

@@ -111,7 +111,7 @@ export default function AssignTaskDetails() {
                     </div>
 
 
-                    <p className='text-lg mt-2'>{description}</p>
+                    <p className='text-lg mt-2'>{item.description}</p>
                   </div>
                 ))
               }

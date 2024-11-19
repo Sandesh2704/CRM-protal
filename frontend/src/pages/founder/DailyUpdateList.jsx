@@ -321,17 +321,21 @@ export default function DailyUpdateList() {
 
             </div>
 
+             <div className='bg-white my-6 py-4 px-4 rounded-lg shadow shadow-black/5 '>
+           
 
-            <div className='bg-white my-6 py-4 px-4 rounded-lg shadow shadow-black/5 overflow-x-auto'>
-                <table className="table-auto text-sm text-left border-collapse">
+           <div className="overflow-x-auto  w-full">
+           <table className="w-full min-w-full  table-auto text-sm text-left border-collapse">
                     <thead className="text-sm font-medium border-b">
                         <tr>
-                            <th scope="col" className="py-3 min-w-10">Sn.</th>
-                            <th scope="col" className="py-3 min-w-48">Profile Name</th>
-                            <th scope="col" className="py-3 min-w-44">Job Role</th>
-                            <th scope="col" className="py-3 min-w-56">Project Name</th>
-                            <th scope="col" className="py-3 min-w-[300px]">Work Update</th>
-                            <th scope="col" className="py-3 min-w-24">Date</th>
+                            <th scope="col" className="py-3 w-10">Sn.</th>
+                            <th scope="col" className="py-3 w-48">Profile Name</th>
+                            <th scope="col" className="py-3 w-44">Job Role</th>
+                            <th scope="col" className="py-3 w-56">Project Name</th>
+                            <th scope="col" className="py-3 w-[300px]">Work Update</th>
+                            <th scope="col" className="py-3 w-24">Date</th>
+
+
                         </tr>
                     </thead>
                     <tbody>
@@ -376,7 +380,10 @@ export default function DailyUpdateList() {
                         )}
                     </tbody>
                 </table>
-            </div>
+           </div>
+               
+                </div>
+        
 
 
             <div className="flex flex-col  md:flex-row justify-between gap-4">

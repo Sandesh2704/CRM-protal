@@ -4,7 +4,7 @@ import Profile from '../pages/Profile';
 import TeamMember from '../pages/teamLeader/TeamMember';
 import Layout from '../layout/Layout';
 import AssignTask from '../pages/AssignTask';
-import TaskList from '../pages/manager/TaskList';
+import YourTaskList from '../pages/teamLeader/YourTaskList';
 import TaskUpdateList from '../pages/teamLeader/TaskUpdateList';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -14,10 +14,11 @@ import StaffDetail from '../pages/StaffDetail';
 import AssignTaskDetails from '../pages/AssignTaskDetails';
 import DailyUpdateFrom from '../pages/DailyUpdateFrom';
 import TeamDailyUpdate from '../pages/teamLeader/TeamDailyUpdate';
+import YourTaskDetails from '../pages/YourTaskDetails';
 
 export default function TeamLeaderRoutes() {
 
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const parentId = user?._id;
   const [ staffData, setStaffData] = useState([])
   useEffect(() => {
@@ -28,7 +29,6 @@ export default function TeamLeaderRoutes() {
           const response = await axios.get(`${process.env.REACT_APP_DOMAIN_URL}/userManage/user/${parentId}`);
           console.log('Team members fetched:', response.data);
 
-          // Update this line to set the teamLeadersList correctly
          
           const users = response.data.users;
           setStaffData(users);
@@ -42,24 +42,61 @@ export default function TeamLeaderRoutes() {
     fetchteamLeadersList();
   }, [parentId]);
  
+
+const [yourTasks, setYourTasks] = useState([]);
+const [yourPendingTasks, setYourPendingTasks] = useState([]);
+
+const fetchTasks = async () => {
+  try {
+      console.log("Fetching tasks for user:", user._id);
+      const response = await axios.get(`${process.env.REACT_APP_DOMAIN_URL}/taskManage/get-assign-task/${user._id}`, {
+          headers: {
+              Authorization: `Bearer ${token}`,
+          },
+      });
+      console.log("Tasks fetched:", response.data);
+
+      // Set all tasks
+      const tasks = response.data;
+      setYourTasks(tasks);
+
+      // Filter tasks with status "Pending"
+      const pendingTasks = tasks.filter((task) => task.status === "Pending");
+      setYourPendingTasks(pendingTasks);
+
+  } catch (error) {
+      console.error("Error fetching tasks:", error);
+  }
+};
+
+
+
+
+  useEffect(() => {
+    if (user._id) {
+      fetchTasks();
+    }
+    fetchTasks();
+}, [user, token]);
+
   return (
     <>
       <Routes>
         {/* Parent route with Layout component */}
-        <Route path="/" element={<Layout />}>
+        <Route path="" element={<Layout />}>
           {/* Nested routes */}
-          <Route index element={<Dashboard staffData={staffData}/>} />
+          <Route index element={<Dashboard staffData={staffData} yourTasks={yourTasks}  yourPendingTasks={yourPendingTasks}/>} />
           <Route path="profile" element={<Profile />} />
-          <Route path="team-members" element={<TeamMember staffData={staffData}/>} />
+          <Route path="team-members" element={<TeamMember staffData={staffData} />} />
           <Route path="add-new-team-members" element={<AddTeamMember />} />  
-          <Route path="task-list" element={<TaskList/>} />
+          <Route path="task-list" element={<YourTaskList yourTasks={yourTasks}/>} />
           <Route path="assign-task" element={<AssignTask staff={staffData} />} />
-          
           <Route path="task-update" element={<TaskUpdateList />} />          
           <Route path="daily-update-form" element={<DailyUpdateFrom />} />  
           <Route path="team-daily-update" element={<TeamDailyUpdate/>} />  
           <Route path="staffDeatils/:slug" element={<StaffDetail/>} />
           <Route path="assignTaskDetails/:slug" element={<AssignTaskDetails/>} />
+          <Route path="yourTaskDetails/:slug" element={<YourTaskDetails fetchTasks={fetchTasks}/>} />
         </Route>
       </Routes>
     </>

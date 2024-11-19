@@ -4,7 +4,7 @@ import Layout from '../layout/Layout';
 import TeamLeaders from '../pages/manager/TeamLeaders';
 import AddTeamLeader from '../pages/manager/AddTeamLeader';
 import AttendanceChart from '../pages/manager/AttendanceChart';
-import TaskList from '../pages/manager/TaskList.jsx'
+import YourTaskList from '../pages/manager/YourTaskList'
 import { useAuth } from '../authProvider/AuthProvider.js';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -80,7 +80,7 @@ const [ staffData, setStaffData] = useState([])
           <Route index element={<Dashboard staffData={staffData} teamLeaders={teamLeaders}/>} />
           <Route path="my-staff" element={<TeamLeaders employees ={staffData}/>} />
           <Route path="add-new-staff" element={<AddTeamLeader />} />                
-          <Route path="your-task" element={<TaskList/>} />
+          <Route path="your-task" element={<YourTaskList/>} />
           <Route path="attendance-chart" element={<AttendanceChart staffData={staffData}/>} />
           <Route path="assign-task" element={<AssignTask staff={staffData} />} />
           <Route path="task-update" element={<TaskUpdateList />} />

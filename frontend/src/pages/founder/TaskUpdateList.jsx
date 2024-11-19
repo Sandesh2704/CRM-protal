@@ -11,7 +11,7 @@ export default function TaskUpdateList() {
     const { user } = useAuth();
     const assignerId = user?._id;
 
-    const [tasks, setTasks] = useState([]);
+    const [tasksUpdate, setUpdateTasks] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(9);
     const [query, setQuery] = useState('');
@@ -35,7 +35,7 @@ export default function TaskUpdateList() {
             try {
                 const response = await axios.get(`${process.env.REACT_APP_DOMAIN_URL}/taskManage/view-assigned-task/${assignerId}`);
                 console.log("API Response for tasks:", response.data);
-                setTasks(response.data.tasks);
+                setUpdateTasks(response.data.tasks);
             } catch (err) {
                 setError(err.response ? err.response.data.message : 'Error fetching tasks');
             }
@@ -43,7 +43,7 @@ export default function TaskUpdateList() {
         fetchTasks();
     }, [assignerId]);
 
-    const filteredTasks = tasks.filter(task =>
+    const filteredTasks = tasksUpdate.filter(task =>
         task.recipientId?.email.toLowerCase().includes(query.toLowerCase()) &&
         (!showPendingOnly || task.status.toLowerCase() === 'pending')
     );
@@ -81,7 +81,7 @@ export default function TaskUpdateList() {
                 <PageHeader title='Assign Task List' icon={<VscTasklist />} />
             </div>
 
-            {tasks.length === 0 ?
+            {tasksUpdate.length === 0 ?
                 (
                     <div className="text-center text-xl py-20 bg-white rounded-lg shadow shadow-black/5 my-7 text-blue-600">
                         No tasks found assign
@@ -154,7 +154,7 @@ export default function TaskUpdateList() {
 
                                                             </div>
 
-                                                            <h3 className='font-semibold text-3xl mt-2 mb-4' >{title.split(' ').slice(0, 12).join(' ')}</h3>
+                                                            <h3 className='font-semibold text-3xl mt-2 mb-4' >{title}</h3>
                                                             <p>{description.split(' ').slice(0, 50).join(' ') + '...'}</p>
                                                         </div>
                                                         <p className='mt-4 text-sm  text-gray-700'>Deadline: {new Date(deadline).toLocaleDateString()}</p>

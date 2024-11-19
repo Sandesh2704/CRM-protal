@@ -30,7 +30,7 @@ export default function Layout() {
     <>
       <div className="flex bg-purple-200/40  w-full">
         <SideBar isOpen={isOpen} setIsOpen={setIsOpen} toggleSidebar={toggleSidebar} />
-        <div className={`flex-col min-h-screen lg:flex-1  w-full  relative z-0 transition-all duration-300  ${isOpen ? 'xl:ml-[252px]' : 'lg:ml-16'}`}>
+        <div className={`flex-col min-h-screen lg:flex-1  w-full  relative  transition-all duration-300  ${isOpen ? 'xl:ml-[252px]' : 'lg:ml-16'}`}>
           <div className={`relative z-0  h-full w-full `}>
             <Navbar toggleSidebar={toggleSidebar} isOpen={isOpen}/>
             <div className="px-4 lg:px-7 flex-grow ">
