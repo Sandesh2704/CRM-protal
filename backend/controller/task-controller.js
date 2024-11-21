@@ -35,7 +35,6 @@ const assignTask = async (req, res) => {
         await newTask.save();
         res.status(201).json({ message: 'Task assigned successfully', task: newTask });
     } catch (err) {
-        console.error('Error in assignTask:', err);
         res.status(500).json({ message: 'Server error' });
     }
 };
@@ -49,13 +48,8 @@ const getAssignTask = async (req, res) => {
         .populate('assignerId', 'username email');
 
 
-
-        // if (tasks.length === 0) {
-        //     return res.status(404).json({ message: "No tasks available for this user." });
-        // }
         res.json(tasks);
     } catch (error) {
-        console.error("Error fetching tasks:", error);
         res.status(500).json({ message: "Server error." });
     }
 };
@@ -104,7 +98,6 @@ const updateTaskStatus = async (req, res) => {
 
         res.status(200).json({ message: "Task updated successfully", task });
     } catch (err) {
-        console.error('Error in updateTaskStatus:', err);
         res.status(500).json({ message: 'Server error' });
     }
 };

@@ -34,7 +34,6 @@ export default function TaskUpdateList() {
         const fetchTasks = async () => {
             try {
                 const response = await axios.get(`${process.env.REACT_APP_DOMAIN_URL}/taskManage/view-assigned-task/${assignerId}`);
-                console.log("API Response for tasks:", response.data);
                 setUpdateTasks(response.data.tasks);
             } catch (err) {
                 setError(err.response ? err.response.data.message : 'Error fetching tasks');

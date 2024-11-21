@@ -62,7 +62,6 @@ export default function YourTaskDetails({ fetchTasks }) {
             toast.success("Task updated successfully!");
             fetchTasks()
         } catch (error) {
-            console.error("Error updating task:", error);
             toast.error("Failed to update the task.");
         }
     };
@@ -105,14 +104,9 @@ export default function YourTaskDetails({ fetchTasks }) {
 
 
                         <div className='text-sm flex gap-1  text-gray-700 '>
-                            <p>Assigned bt: </p>
+                            <p>Assigned by: </p>
                             <span className='font-semibold'>{assignerId?.username}</span>
-                            <div className='italic ' >
-                                <span >{assignerId?.email}</span>
-                            </div>
-
-
-
+                            <span className='italic ' >({assignerId?.email})</span>
                         </div>
                     </div>
 

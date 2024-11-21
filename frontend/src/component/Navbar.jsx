@@ -23,7 +23,7 @@ export default function Navbar({ toggleSidebar, isOpen }) {
 
   return (
     <>
-      <div className={`relative z-20 h-[4.3rem] py-1 px-4 lg:px-6  border-b  flex items-center justify-between bg-white  fixed sticky top-0 left-0 `}>
+      <div className={`relative z-10 h-[4.3rem] py-1 px-4 lg:px-6  border-b  flex items-center justify-between bg-white  fixed sticky top-0 left-0 `}>
         <button
           onClick={toggleSidebar}
           className={`group p-2 bg-gradiant text-white  rounded-md cursor-pointer ${!isOpen ? 'flex lg:hidden' : 'flex'}`} >

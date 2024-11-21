@@ -34,7 +34,6 @@ export default function TaskUpdateList() {
         const fetchTasks = async () => {
             try {
                 const response = await axios.get(`${process.env.REACT_APP_DOMAIN_URL}/taskManage/view-assigned-task/${assignerId}`);
-                console.log("API Response for tasks:", response.data);
                 setUpdateTasks(response.data.tasks);
             } catch (err) {
                 setError(err.response ? err.response.data.message : 'Error fetching tasks');
@@ -171,7 +170,7 @@ export default function TaskUpdateList() {
 
                                                         <div className="text-center mt-3">
                                                             <Link
-                                                                to={`/founder/assignTaskDetails/${_id}`}
+                                                                to={`/team-leader/assignTaskDetails/${_id}`}
                                                                 state={{ assignTaskDetails: task }}
                                                                 className="text-xs text-indigo-500 italic hover:underline hover:text-indigo-600 font-medium"
                                                             >

@@ -171,7 +171,7 @@ export default function TaskUpdateList() {
 
                                                         <div className="text-center mt-3">
                                                             <Link
-                                                                to={`/founder/assignTaskDetails/${_id}`}
+                                                                to={`/manager/assignTaskDetails/${_id}`}
                                                                 state={{ assignTaskDetails: task }}
                                                                 className="text-xs text-indigo-500 italic hover:underline hover:text-indigo-600 font-medium"
                                                             >

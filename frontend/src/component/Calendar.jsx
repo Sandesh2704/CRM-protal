@@ -59,6 +59,3 @@ export default function Calendar({ newAttendance, month, year, onYearChange, onM
         </div>
     );
 }
-
-
-

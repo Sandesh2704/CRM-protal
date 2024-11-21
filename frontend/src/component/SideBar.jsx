@@ -54,7 +54,7 @@ export default function SideBar({ isOpen, toggleSidebar }) {
   return (
     <>
       <div
-        className={`z-10 bg-white border-r-2  transition-all duration-300 ${isOpen ? 'w-[80%] sm:w-[252px] block' : 'hidden lg:block lg:w-16'}   h-screen fixed`}
+        className={`z-20  bg-white border-r-2  transition-all duration-300 ${isOpen ? 'w-[80%] sm:w-[252px] block' : 'hidden lg:block lg:w-16'}   h-screen fixed`}
         style={{ borderColor: `linear-gradient(266deg, #a54de3 32%, #ff08e9 71%)` }}>
         <div className={` flex items-center  shadow shadow-white/5 justify-center border-b h-[4.3rem] py-1`}>
           <div className={`${!isOpen ? 'hidden' : ''}`}>

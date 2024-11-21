@@ -8,6 +8,7 @@ import TeamLeaderRoutes from '../RoutesByPosition/TeamLeaderRoutes';
 import EmployeeRoutes from '../RoutesByPosition/EmployeeRoutes';
 
 import { useAuth } from '../authProvider/AuthProvider';
+import ScrollToTop from '../component/ScrollToTop';
 
 export default function RoutingSetup() {
   const { isLoggedIn, userJobPosition } = useAuth();
@@ -26,10 +27,9 @@ export default function RoutingSetup() {
   };
 
 
-
-
   return (
     <Router>
+      <ScrollToTop /> {/* Add ScrollToTop component here */}
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/ragistrationform" element={<RagistrationForm />} />
@@ -41,10 +41,10 @@ export default function RoutingSetup() {
           element={
             isLoggedIn ? (
               userJobPosition === 'Founder' ? <Navigate to="/founder/" /> :
-              userJobPosition === 'Manager' ? <Navigate to="/manager/" /> :
-              userJobPosition === 'Team Leader' ? <Navigate to="/team-leader/" /> :
-              userJobPosition === 'Employee' ? <Navigate to="/employee/" /> :
-              <Navigate to="/login" />
+                userJobPosition === 'Manager' ? <Navigate to="/manager/" /> :
+                  userJobPosition === 'Team Leader' ? <Navigate to="/team-leader/" /> :
+                    userJobPosition === 'Employee' ? <Navigate to="/employee/" /> :
+                      <Navigate to="/login" />
             ) : <Navigate to="/login" />
           }
         />

@@ -11,13 +11,11 @@ export default function YourTaskList() {
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                console.log("Fetching tasks for user:", user._id);
                 const response = await axios.get(`${process.env.REACT_APP_DOMAIN_URL}/taskManage/get-assign-task/${user._id}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                console.log("Tasks fetched:", response.data);
                 setYourTasks(response.data);
             } catch (error) {
                 console.error("Error fetching tasks:", error);

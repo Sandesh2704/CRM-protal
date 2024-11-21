@@ -19,7 +19,6 @@ const getUsers = async (req, res) => {
 
         res.status(200).json({ users });
     } catch (err) {
-        console.error('Error in getUsers:', err);
         res.status(500).json({ message: 'Server error' });
     }
 };
@@ -30,17 +29,14 @@ const addUser = async (req, res) => {
 
         const profileIMG = req.file ? req.file.path : null;
 
-        console.log("Adding user with role:", jobPosition);
-        console.log("Parent ID:", parentId);
+
 
         // Fetch parent user
         const parentUser = await User.findById(parentId);
         if (!parentUser) {
-            console.log("Invalid parent user ID.");
             return res.status(400).json({ message: 'Invalid parent user.' });
         }
 
-        console.log("Parent user found with job position:", parentUser.jobPosition);
 
         const validRoles = {
             'Founder': 'Manager',
@@ -54,11 +50,9 @@ const addUser = async (req, res) => {
         // If `expectedRoles` is an array, check if it includes `jobPosition`. Otherwise, compare directly.
         if (Array.isArray(expectedRoles)) {
             if (!expectedRoles.includes(jobPosition)) {
-                console.log(`Invalid parent role for ${jobPosition}. Expected one of: ${expectedRoles.join(', ')}`);
-                return res.status(400).json({ message: `Invalid parent for ${jobPosition}.` });
+               return res.status(400).json({ message: `Invalid parent for ${jobPosition}.` });
             }
         } else if (expectedRoles !== jobPosition) {
-            console.log(`Invalid parent role for ${jobPosition}. Expected parent role: ${expectedRoles}`);
             return res.status(400).json({ message: `Invalid parent for ${jobPosition}.` });
         }
 
@@ -67,7 +61,6 @@ const addUser = async (req, res) => {
         // Check if email is already registered
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            console.log("Email already exists.");
             return res.status(400).json({ message: 'Email already exists.' });
         }
 
@@ -92,10 +85,8 @@ const addUser = async (req, res) => {
 
 
         await newUser.save();
-        console.log("New user added successfully:", newUser);
         res.status(201).json({ message: `${jobPosition} added successfully`, user: newUser });
     } catch (err) {
-        console.error('Error in addUser:', err);
         res.status(500).json({ message: 'Server error' });
     }
 };
@@ -103,17 +94,14 @@ const addUser = async (req, res) => {
 
 const editUser = async (req, res) => {
     try {
-      console.log("Request received at editUser");
-      console.log("Params:", req.params); // Log route parameters
-      console.log("Body:", req.body);     // Log request body
-      console.log("File:", req.file);     // Log uploaded file
+    // Log uploaded file
   
       const { userId } = req.params;
       const { username, email, number, department, jobPosition, jobRole, city, state, gender, joiningDate } = req.body;
   
       const user = await User.findById(userId);
       if (!user) {
-        console.error("User not found");
+
         return res.status(404).json({ message: 'User not found.' });
       }
   
@@ -134,10 +122,9 @@ const editUser = async (req, res) => {
   
       await user.save();
   
-      console.log("User updated successfully:", user);
+
       res.status(200).json({ message: 'User profile updated successfully.', user });
     } catch (err) {
-      console.error("Error in editUser:", err);
       res.status(500).json({ message: 'Server error', error: err.message });
     }
   };

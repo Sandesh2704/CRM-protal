@@ -77,10 +77,10 @@ export default function AddTeamMember() {
       return false;
     }
     try {
-      const response = await axios.post(`${process.env.REACT_APP_DOMAIN_URL}/userManage/user/add`, formData, {
+      await axios.post(`${process.env.REACT_APP_DOMAIN_URL}/userManage/user/add`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      console.log('Response from server:', response.data);
+
 
       setNewStaf({
         username: '',

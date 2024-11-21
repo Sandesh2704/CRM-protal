@@ -69,7 +69,6 @@ const getTeamUpdates = async (req, res) => {
 
         res.status(200).json({ teamMembers, updates });
     } catch (error) {
-        console.error("Error fetching team updates:", error);
         res.status(500).json({ message: 'Error fetching team updates', error });
     }
 };

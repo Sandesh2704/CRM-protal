@@ -25,25 +25,20 @@ export default function AssignTask({ staff }) {
       ...taskData,
       [e.target.name]: e.target.value,
     });
-    console.log("Task Data Updated:", taskData);
   };
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     setDocuments([...documents, ...files]);
-    console.log("Files Selected:", files);
-    console.log("Documents Array:", documents);
   };
 
   const handleRemoveFile = (index) => {
     const updatedDocs = documents.filter((_, i) => i !== index);
     setDocuments(updatedDocs);
-    console.log("File Removed, Updated Documents Array:", updatedDocs); // Log updated documents array
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Form Submitted with Data:", taskData);     // Log data on form submission
+    e.preventDefault();   // Log data on form submission
 
     const formData = new FormData();
     formData.append('title', taskData.title);
@@ -53,12 +48,11 @@ export default function AssignTask({ staff }) {
     formData.append('recipientId', taskData.recipientId);
 
     documents.forEach((file) => {
-      formData.append('documents', file);
-      console.log("Appending File to FormData:", file);   // Log each file appended to FormData
+      formData.append('documents', file);   
     });
 
     try {
-      const response = await axios.post(
+        await axios.post(
         `${process.env.REACT_APP_DOMAIN_URL}/taskManage/assign-task`,
         formData,
         {
@@ -68,7 +62,6 @@ export default function AssignTask({ staff }) {
           },
         }
       );
-      console.log("Response from Server:", response.data); // Log response from server
       Swal.fire({
         title: 'Task Assign  successfully!',
         icon: 'success',

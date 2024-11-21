@@ -45,10 +45,7 @@ export default function AssignTaskDetails() {
             <div className='text-sm flex gap-1  text-gray-700 '>
               <p>Assigned to: </p>
               <span className='font-semibold'>{recipientId?.username}</span>
-              <div className='italic ' >
-                <span >{recipientId?.email}</span>
-              </div>
-
+              <span className='italic ' >({recipientId?.email})</span>
             </div>
           </div>
 

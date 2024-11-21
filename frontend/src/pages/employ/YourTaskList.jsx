@@ -99,7 +99,7 @@ export default function YourTaskList() {
 
                                             <div className="text-center mt-3">
                                                 <Link
-                                                    to={`/manager/yourTaskDeatils/${_id}`}
+                                                    to={`/employee/yourTaskDeatils/${_id}`}
                                                     state={{ assignTaskDetails: task }}
                                                     className="text-xs text-indigo-500 italic hover:underline hover:text-indigo-600 font-medium"
                                                 >
