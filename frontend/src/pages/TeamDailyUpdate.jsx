@@ -1,12 +1,12 @@
 import { FaAnglesLeft, FaAnglesRight, FaWpforms } from 'react-icons/fa6';
-import { useAuth } from '../../authProvider/AuthProvider';
-import PageHeader from '../../component/PageHeader';
+import PageHeader from '../component/PageHeader';
 import { IoSearchOutline } from 'react-icons/io5';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { toast } from 'react-toastify';
+import { useAuth } from '../authProvider/AuthProvider';
 
 export default function TeamDailyUpdate() {
     const [teamDailyUpdates, setTeamDailyUpdates] = useState([]);

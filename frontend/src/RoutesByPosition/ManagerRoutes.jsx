@@ -14,6 +14,7 @@ import StaffDetail from '../pages/StaffDetail';
 import AssignTaskDetails from '../pages/AssignTaskDetails.jsx';
 import YourTaskDetails from '../pages/YourTaskDetails.jsx';
 import Profile from '../pages/Profile.jsx';
+import TeamDailyUpdate from '../pages/TeamDailyUpdate.jsx';
 
 export default function ManagerRoutes() {
 
@@ -21,7 +22,7 @@ export default function ManagerRoutes() {
   const parentId = user?._id;
   
   const [ teamLeaders, setTeamLeaders  ] =useState([])
-const [ staffData, setStaffData] = useState([])
+  const [ staffData, setStaffData] = useState([])
 
 
   // const [ myStaffData, setMyStaffData] = useState([])
@@ -33,7 +34,6 @@ const [ staffData, setStaffData] = useState([])
   //         const response = await axios.get(`${process.env.REACT_APP_DOMAIN_URL}/userManage/user/${parentId}`);
   //         console.log('Team members fetched:', response.data);
 
-         
   //         const users = response.data.users;
   //         setStaffData(users);
   //       } catch (error) {
@@ -79,15 +79,16 @@ const [ staffData, setStaffData] = useState([])
           {/* Nested routes */}
           <Route index element={<Dashboard staffData={staffData} teamLeaders={teamLeaders}/>} />
           <Route path="my-staff" element={<TeamLeaders employees ={staffData}/>} />
-          <Route path="add-new-staff" element={<AddTeamLeader />} />                
+          <Route path="add-new-staff" element={<AddTeamLeader fetchUsers={fetchUsers}/>} />                
           <Route path="your-task" element={<YourTaskList/>} />
           <Route path="attendance-chart" element={<AttendanceChart staffData={staffData}/>} />
-          <Route path="assign-task" element={<AssignTask staff={staffData} />} />
+          <Route path="assign-task" element={<AssignTask staffData={staffData} />} />
           <Route path="task-update" element={<TaskUpdateList />} />
           <Route path="staffDeatils/:slug" element={<StaffDetail/>} />
           <Route path="assignTaskDetails/:slug" element={<AssignTaskDetails/>} />
           <Route path="yourTaskDeatils/:slug" element={<YourTaskDetails/>} />
           <Route path="profile" element={<Profile />} />
+          <Route path="team-daily-update" element={<TeamDailyUpdate/>} />  
         </Route>
       </Routes>
     </>

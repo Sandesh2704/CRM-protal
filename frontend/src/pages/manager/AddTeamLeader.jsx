@@ -13,7 +13,7 @@ import { checkUserExists, validateInputs } from '../../userValidation/UserValida
 import { toast } from 'react-toastify';
 import SelectInput from '../../component/SelectInput';
 
-export default function AddTeamLeader() {
+export default function AddTeamLeader({fetchUsers}) {
 
   const { user } = useAuth();
   const parentId = user?._id;
@@ -100,7 +100,7 @@ export default function AddTeamLeader() {
       setPreviewSrc('');
 
   
-
+      await fetchUsers()
       Swal.fire({
         title: 'Manager added successfully!',
         icon: 'success',
@@ -226,15 +226,8 @@ export default function AddTeamLeader() {
               </h1>
             </div>
 
-
-            
-
             <TextInput type='text' placeholder='City*' label='City*' name='city' value={newStaff.city} inputHandler={inputHandler} />
             <TextInput type='text' label='State*' placeholder='State*' name="state" value={newStaff.state} inputHandler={inputHandler} />
-
-          
-
-          
 
             <div>
               <label className='font-medium'>Gender:</label>

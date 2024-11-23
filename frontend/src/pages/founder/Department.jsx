@@ -22,11 +22,6 @@ export default function Department({departmentData, getDepartments}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (newDepartmentDeta.title.length < 20) {
-      toast.error("Department title must be at least 4 characters long.");
-      return;
-  }
 
     try {
       await axios.post(`${process.env.REACT_APP_DOMAIN_URL}/departementManage/add-new-department`, newDepartmentDeta, {

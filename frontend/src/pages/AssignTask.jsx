@@ -8,7 +8,7 @@ import { IoMdCloseCircle } from "react-icons/io";
 import TextInput from '../component/TextInput';
 import Swal from 'sweetalert2';
 
-export default function AssignTask({ staff }) {
+export default function AssignTask({ staffData }) {
   const { user, token } = useAuth();
   const [taskData, setTaskData] = useState({
     title: '',
@@ -103,7 +103,7 @@ export default function AssignTask({ staff }) {
                 className="text-theme1 placeholder:text-zinc-500 mt-4 outline-none bg-white w-full text-sm text-gray-900 py-[16px] px-6 rounded-sm border"
               >
                 <option value="" disabled>Select a Assigner</option>
-                { staff.map((item) => (
+                { staffData.map((item) => (
                   <option key={item._id} value={item._id}>
                     {item.username}
                   </option>

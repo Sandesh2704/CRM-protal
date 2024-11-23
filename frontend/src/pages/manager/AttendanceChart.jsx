@@ -5,7 +5,7 @@ import PageHeader from "../../component/PageHeader";
 import { FaCalendarDays } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import Calendar from "../../component/Calendar";
+import CalendarByID from "../../component/CalendarByID";
 import { IoSearchOutline } from "react-icons/io5";
 
 export default function AttendanceChart({ staffData }) {
@@ -13,7 +13,7 @@ export default function AttendanceChart({ staffData }) {
     const parentId = user?._id;
 
     const [attendanceData, setAttendanceData] = useState({});
-    const [newAttendance, setNewAttendance] = useState([]);
+    const [updatedAttendance, setUpdatedAttendance] = useState([]);
     const [query, setQuery] = useState("");
 
     const currentDate = new Date()
@@ -29,6 +29,10 @@ export default function AttendanceChart({ staffData }) {
         });
     };
 
+    useEffect(() => {
+        fetchAttendanceData();
+    }, [parentId, month, year]);
+
     const fetchAttendanceData = async () => {
         try {
             const response = await axios.get(
@@ -40,15 +44,13 @@ export default function AttendanceChart({ staffData }) {
                 acc[entry.staffId._id][date] = entry.status;
                 return acc;
             }, {});
-            setNewAttendance(attendanceMap);
+            setUpdatedAttendance(attendanceMap);
         } catch (error) {
             console.error("Failed to fetch attendance data:", error);
         }
     };
 
-    useEffect(() => {
-        fetchAttendanceData();
-    }, [parentId, month, year]);
+
 
     const handleSubmitAll = async (e) => {
         e.preventDefault();
@@ -232,12 +234,15 @@ export default function AttendanceChart({ staffData }) {
                     {filteredStaffData.map((staff) => (
                         <div key={staff._id} className="bg-white shadow rounded-lg py-6 px-7">
                             <h2 className="text-xl font-semibold mb-4" dangerouslySetInnerHTML={{ __html: highlightMatch(staff.username || '') }} />
-                            <Calendar
-                                newAttendance={newAttendance[staff._id] || {}}
+                            <CalendarByID
+                                updatedAttendance={updatedAttendance[staff._id] || {}}
                                 month={month}
                                 year={year}
                                 onMonthChange={onMonthChange}
                                 onYearChange={onYearChange}
+                                fetchAttendanceData={fetchAttendanceData}
+                                setUpdatedAttendance={setUpdatedAttendance}
+                                staffId={staff._id}
                             />
                         </div>
                     ))}
@@ -246,6 +251,3 @@ export default function AttendanceChart({ staffData }) {
         </>
     );
 }
-
-
-

@@ -1,4 +1,5 @@
 import React from "react";
+import { RiFileHistoryFill } from "react-icons/ri"
 
 export default function Calendar({ newAttendance, month, year, onYearChange, onMonthChange }) {
     const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
@@ -6,31 +7,43 @@ export default function Calendar({ newAttendance, month, year, onYearChange, onM
     const firstDayOfMonth = new Date(year, month, 1).getDay();
 
     return (
-        <div className="">
-            <div className="flex justify-between items-center mb-4">
-                <select
-                    value={month}
-                    onChange={(e) => onMonthChange(Number(e.target.value))}
-                    className="border rounded-md p-1"
-                >
-                    {Array.from({ length: 12 }).map((_, index) => (
-                        <option key={index} value={index}>
-                            {new Date(0, index).toLocaleString("default", { month: "long" })}
-                        </option>
-                    ))}
-                </select>
-                <select
-                    value={year}
-                    onChange={(e) => onYearChange(Number(e.target.value))}
-                    className="border rounded-md p-1"
-                >
-                    {Array.from({ length: 5 }).map((_, index) => (
-                        <option key={index} value={year - 2 + index}>
-                            {year - 2 + index}
-                        </option>
-                    ))}
-                </select>
+        <div className="bg-white h-fit shadow rounded-lg py-6 px-4 lg:px-6">
+
+            <div className="flex flex-wrap items-center justify-between gap-5 mb-7">
+                <div className='flex gap-3 items-center'>
+                    <div className={`group p-2 bg-gradiant text-xl text-white  rounded-md cursor-pointer`} >
+                        <RiFileHistoryFill />
+                    </div>
+                    <h1 className='font-medium text-xl'>Attendence Histroy</h1>
+                </div>
+
+                <div className="flex justify-end gap-2 items-center ">
+                    <select
+                        value={month}
+                        onChange={(e) => onMonthChange(Number(e.target.value))}
+                        className="border rounded-md p-1"
+                    >
+                        {Array.from({ length: 12 }).map((_, index) => (
+                            <option key={index} value={index}>
+                                {new Date(0, index).toLocaleString("default", { month: "short" })}
+                            </option>
+                        ))}
+                    </select>
+                    <select
+                        value={year}
+                        onChange={(e) => onYearChange(Number(e.target.value))}
+                        className="border rounded-md p-1"
+                    >
+                        {Array.from({ length: 4 }).map((_, index) => (
+                            <option key={index} value={year - 2 + index}>
+                                {year - 2 + index}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </div>
+
+
             <div className="grid grid-cols-7 text-center font-medium mb-2 text-gray-700">
                 {daysOfWeek.map((day) => (
                     <div key={day}>{day}</div>

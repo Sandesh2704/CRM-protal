@@ -37,7 +37,7 @@ export default function AssignTaskDetails() {
             </div>
 
             <h3 className='font-semibold text-3xl mt-2 mb-4'>{title}</h3>
-            <p>{description}...</p>
+            <p>{description}</p>
             <p className='mt-4 text-sm  text-gray-700'>Deadline: {new Date(deadline).toLocaleDateString()}</p>
 
 
@@ -54,7 +54,7 @@ export default function AssignTaskDetails() {
 
               <ul className="space-y-2">
                 {documents.map((doc, index) => (
-                  <li key={index} className="flex items-center justify-between bg-gray-100 p-2 rounded-md">
+                  <li key={index} className="flex items-center justify-between bg-purple-200/40 p-2 rounded-md">
                     <span className="text-gray-700">{doc.name}</span>
                     <a
                       href={`${process.env.REACT_APP_DOMAIN_URL}${doc.url}`}

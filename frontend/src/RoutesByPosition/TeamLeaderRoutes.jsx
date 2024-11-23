@@ -13,8 +13,8 @@ import AddTeamMember from '../pages/teamLeader/AddTeamMember';
 import StaffDetail from '../pages/StaffDetail';
 import AssignTaskDetails from '../pages/AssignTaskDetails';
 import DailyUpdateFrom from '../pages/DailyUpdateFrom';
-import TeamDailyUpdate from '../pages/teamLeader/TeamDailyUpdate';
 import YourTaskDetails from '../pages/YourTaskDetails';
+import TeamDailyUpdate from '../pages/TeamDailyUpdate';
 
 export default function TeamLeaderRoutes() {
 
