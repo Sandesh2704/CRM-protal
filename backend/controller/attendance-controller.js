@@ -64,10 +64,40 @@ const getAttendanceByMonth = async (req, res) => {
     }
 };
 
-  
 
 
+const updateAttendance = async (req, res) => {
+  const { parentId, staffId, date, newStatus } = req.body;
 
+  if (!parentId || !staffId || !date || !newStatus) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
 
-module.exports = { submitAttendance, getAttendanceByMonth, getUserAttendance, updateAttendance };
+  try {
+    // Check if attendance already exists for the given date and staffId
+    let attendance = await Attendance.findOne({ parentId, staffId, date });
+
+    if (attendance) {
+      // If attendance exists, update the status
+      attendance.status = newStatus;
+      await attendance.save();
+      return res.status(200).json({ message: "Attendance updated successfully", attendance });
+    } else {
+      // If attendance does not exist, create a new attendance record
+      attendance = new Attendance({
+        parentId,
+        staffId,
+        date,
+        status: newStatus,
+      });
+      await attendance.save();
+      return res.status(201).json({ message: "Attendance created successfully", attendance });
+    }
+  } catch (error) {
+    console.log("Error updating or creating attendance:", error);
+    res.status(500).json({ message: "Failed to update or create attendance", error });
+  }
+};
+
+module.exports = { submitAttendance, getAttendanceByMonth, getUserAttendance, updateAttendance};
 
