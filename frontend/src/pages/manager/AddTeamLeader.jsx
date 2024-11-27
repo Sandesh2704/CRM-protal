@@ -78,6 +78,16 @@ export default function AddTeamLeader({fetchUsers}) {
       });
       return false;
   }
+
+  if (!newStaff.jobPosition) {
+    toast.error('Job position is  required.', {
+        position: 'top-right',
+        autoClose: 3000,
+    });
+    return false;
+}
+
+
     try {
       await axios.post(`${process.env.REACT_APP_DOMAIN_URL}/userManage/user/add`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
@@ -230,18 +240,30 @@ export default function AddTeamLeader({fetchUsers}) {
             <TextInput type='text' label='State*' placeholder='State*' name="state" value={newStaff.state} inputHandler={inputHandler} />
 
             <div>
-              <label className='font-medium'>Gender:</label>
-              <div className='flex gap-5 py-4 px-6 mt-2'>
-                <div className='flex items-center gap-2'>
-                  <input type="radio" name="gender" value="male" checked={newStaff.gender === 'male'} onChange={inputHandler} />
-                  <label>Male</label>
-                </div>
-                <div className='flex items-center gap-2'>
-                  <input type="radio" name="gender" value="female" checked={newStaff.gender === 'female'} onChange={inputHandler} />
-                  <label>Female</label>
-                </div>
-              </div>
-            </div>
+                    <label className='font-medium'>Gender:</label>
+                    <div className='flex gap-5 py-4 px-6 mt-2'>
+                      <label className='flex items-center gap-2'>
+                        <input
+                          type="radio"
+                          name="gender"
+                          value="male"
+                          checked={newStaff.gender === 'male'}
+                          onChange={inputHandler}
+                        />
+                        Male
+                      </label>
+                      <label className='flex items-center gap-2'>
+                        <input
+                          type="radio"
+                          name="gender"
+                          value="female"
+                          checked={newStaff.gender === 'female'}
+                          onChange={inputHandler}
+                        />
+                        Female
+                      </label>
+                    </div>
+                  </div>
 
           </div>
           <div className='mt-12 flex justify-center'>

@@ -81,7 +81,6 @@ export default function YourTaskDetails({ fetchTasks }) {
                 <div>
                     <div className='bg-white shadow shadow-black/5 rounded-2xl px-4 py-6'>
 
-
                         <div className='flex items-center gap-2'>
                             <div
                                 className={`rounded-full p-[3px] ${status === 'Pending' ? 'bg-red-500' :
@@ -199,27 +198,33 @@ export default function YourTaskDetails({ fetchTasks }) {
 
 
                                 <div className="flex items-center mb-7 mt-3">
-                                    <input
-                                        type="radio"
-                                        checked={taskStatus === 'Pending'}
-                                        onChange={() => setTaskStatus('Pending')}
-                                        className="mr-2"
-                                    />
-                                    <label>Pending</label>
-                                    <input
-                                        type="radio"
-                                        checked={taskStatus === 'Complete'}
-                                        onChange={() => setTaskStatus('Complete')}
-                                        className="mr-2 ml-4"
-                                    />
-                                    <label>Complete</label>
-                                    <input
-                                        type="radio"
-                                        checked={taskStatus === 'Delay'}
-                                        onChange={() => setTaskStatus('Delay')}
-                                        className="mr-2 ml-4"
-                                    />
-                                    <label>Delay</label>
+                                    <label className="flex items-center mr-4">
+                                        <input
+                                            type="radio"
+                                            checked={taskStatus === 'Pending'}
+                                            onChange={() => setTaskStatus('Pending')}
+                                            className="mr-2"
+                                        />
+                                        Pending
+                                    </label>
+                                    <label className="flex items-center mr-4">
+                                        <input
+                                            type="radio"
+                                            checked={taskStatus === 'Complete'}
+                                            onChange={() => setTaskStatus('Complete')}
+                                            className="mr-2"
+                                        />
+                                        Complete
+                                    </label>
+                                    <label className="flex items-center">
+                                        <input
+                                            type="radio"
+                                            checked={taskStatus === 'Delay'}
+                                            onChange={() => setTaskStatus('Delay')}
+                                            className="mr-2"
+                                        />
+                                        Delay
+                                    </label>
                                 </div>
                                 <button
                                     onClick={() => handleUpdateSubmit(task._id)}
@@ -232,6 +237,5 @@ export default function YourTaskDetails({ fetchTasks }) {
                 </div>
             </div>
         </>
-
     );
 }

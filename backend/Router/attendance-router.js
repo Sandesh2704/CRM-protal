@@ -12,6 +12,5 @@ router.get("/get-attendance/:parentId/:year/:month", getAttendanceByMonth);
 
 router.get("/my-attendance/:userId/:year/:month", getUserAttendance);
 
-router.put('/update-attendance/:staffId', updateAttendance)
 
 module.exports = router;

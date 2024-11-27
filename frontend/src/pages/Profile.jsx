@@ -221,20 +221,33 @@ export default function Profile() {
                     placeholder="Enter your state"
                   />
 
+
+
                   <div>
                     <label className='font-medium'>Gender:</label>
                     <div className='flex gap-5 py-4 px-6 mt-2'>
-                      <div className='flex items-center gap-2'>
-                        <input type="radio" name="gender" value={updatedData.gender} checked={updatedData.gender === 'male'} onChange={inputHandler} />
-                        <label>Male</label>
-                      </div>
-                      <div className='flex items-center gap-2'>
-                        <input type="radio" name="gender" value={updatedData.gender} checked={updatedData.gender === 'female'} onChange={inputHandler} />
-                        <label>Female</label>
-                      </div>
+                      <label className='flex items-center gap-2'>
+                        <input
+                          type="radio"
+                          name="gender"
+                          value="male"
+                          checked={updatedData.gender === 'male'}
+                          onChange={inputHandler}
+                        />
+                        Male
+                      </label>
+                      <label className='flex items-center gap-2'>
+                        <input
+                          type="radio"
+                          name="gender"
+                          value="female"
+                          checked={updatedData.gender === 'female'}
+                          onChange={inputHandler}
+                        />
+                        Female
+                      </label>
                     </div>
                   </div>
-
 
                   <TextInput
                     type="date"

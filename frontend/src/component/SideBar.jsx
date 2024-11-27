@@ -30,6 +30,7 @@ export default function SideBar({ isOpen, toggleSidebar }) {
       { path: '/manager/my-staff', label: 'My Staff', icon: <LuUsers2 /> },
       { path: '/manager/add-new-staff', label: 'Add New Staff', icon: <AiOutlineUserAdd /> },
       { path: '/manager/attendance-chart', label: 'Attendance Chart', icon: <SlCalender /> },
+      { path: '/manager/attendance-histroy', label: 'Attendance Histroy', icon: <SlCalender /> },
       { path: '/manager/your-task', label: 'Your Task ', icon: <GrTasks /> },
       { path: '/manager/assign-task', label: 'Assign Task', icon: <CgGoogleTasks /> },
       { path: '/manager/task-update', label: 'Assign Task Update', icon: <VscTasklist /> },

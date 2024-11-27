@@ -15,6 +15,7 @@ import AssignTaskDetails from '../pages/AssignTaskDetails.jsx';
 import YourTaskDetails from '../pages/YourTaskDetails.jsx';
 import Profile from '../pages/Profile.jsx';
 import TeamDailyUpdate from '../pages/TeamDailyUpdate.jsx';
+import AttendanceHistory from '../pages/manager/AttendanceHistory.jsx';
 
 export default function ManagerRoutes() {
 
@@ -82,6 +83,7 @@ export default function ManagerRoutes() {
           <Route path="add-new-staff" element={<AddTeamLeader fetchUsers={fetchUsers}/>} />                
           <Route path="your-task" element={<YourTaskList/>} />
           <Route path="attendance-chart" element={<AttendanceChart staffData={staffData}/>} />
+          <Route path="attendance-histroy" element={<AttendanceHistory staffData={staffData}/>} />
           <Route path="assign-task" element={<AssignTask staffData={staffData} />} />
           <Route path="task-update" element={<TaskUpdateList />} />
           <Route path="staffDeatils/:slug" element={<StaffDetail/>} />
