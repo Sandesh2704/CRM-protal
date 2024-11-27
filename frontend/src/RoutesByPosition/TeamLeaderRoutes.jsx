@@ -90,7 +90,7 @@ const fetchTasks = async () => {
           <Route path="team-members" element={<TeamMember staffData={staffData} />} />
           <Route path="add-new-team-members" element={<AddTeamMember />} />  
           <Route path="task-list" element={<YourTaskList yourTasks={yourTasks}/>} />
-          <Route path="assign-task" element={<AssignTask staff={staffData} />} />
+          <Route path="assign-task" element={<AssignTask  staffData={staffData} />} />
           <Route path="task-update" element={<TaskUpdateList />} />          
           <Route path="daily-update-form" element={<DailyUpdateFrom />} />  
           <Route path="team-daily-update" element={<TeamDailyUpdate/>} />  
