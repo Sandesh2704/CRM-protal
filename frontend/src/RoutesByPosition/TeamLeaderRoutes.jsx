@@ -20,7 +20,7 @@ export default function TeamLeaderRoutes() {
 
   const { user, token } = useAuth();
   const parentId = user?._id;
-  const [ staffData, setStaffData] = useState([])
+  const [staffData, setStaffData] = useState([])
   useEffect(() => {
     const fetchteamLeadersList = async () => {
       if (parentId) {
@@ -29,7 +29,7 @@ export default function TeamLeaderRoutes() {
           const response = await axios.get(`${process.env.REACT_APP_DOMAIN_URL}/userManage/user/${parentId}`);
           console.log('Team members fetched:', response.data);
 
-         
+
           const users = response.data.users;
           setStaffData(users);
         } catch (error) {
@@ -41,18 +41,18 @@ export default function TeamLeaderRoutes() {
     };
     fetchteamLeadersList();
   }, [parentId]);
- 
 
-const [yourTasks, setYourTasks] = useState([]);
-const [yourPendingTasks, setYourPendingTasks] = useState([]);
 
-const fetchTasks = async () => {
-  try {
+  const [yourTasks, setYourTasks] = useState([]);
+  const [yourPendingTasks, setYourPendingTasks] = useState([]);
+
+  const fetchTasks = async () => {
+    try {
       console.log("Fetching tasks for user:", user._id);
       const response = await axios.get(`${process.env.REACT_APP_DOMAIN_URL}/taskManage/get-assign-task/${user._id}`, {
-          headers: {
-              Authorization: `Bearer ${token}`,
-          },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       console.log("Tasks fetched:", response.data);
 
@@ -64,10 +64,10 @@ const fetchTasks = async () => {
       const pendingTasks = tasks.filter((task) => task.status === "Pending");
       setYourPendingTasks(pendingTasks);
 
-  } catch (error) {
+    } catch (error) {
       console.error("Error fetching tasks:", error);
-  }
-};
+    }
+  };
 
 
 
@@ -77,7 +77,7 @@ const fetchTasks = async () => {
       fetchTasks();
     }
     fetchTasks();
-}, [user, token]);
+  }, [user, token]);
 
   return (
     <>
@@ -85,18 +85,18 @@ const fetchTasks = async () => {
         {/* Parent route with Layout component */}
         <Route path="" element={<Layout />}>
           {/* Nested routes */}
-          <Route index element={<Dashboard staffData={staffData} yourTasks={yourTasks}  yourPendingTasks={yourPendingTasks}/>} />
+          <Route index element={<Dashboard staffData={staffData} yourTasks={yourTasks} yourPendingTasks={yourPendingTasks} />} />
           <Route path="profile" element={<Profile />} />
           <Route path="team-members" element={<TeamMember staffData={staffData} />} />
-          <Route path="add-new-team-members" element={<AddTeamMember />} />  
-          <Route path="task-list" element={<YourTaskList yourTasks={yourTasks}/>} />
-          <Route path="assign-task" element={<AssignTask  staffData={staffData} />} />
-          <Route path="task-update" element={<TaskUpdateList />} />          
-          <Route path="daily-update-form" element={<DailyUpdateFrom />} />  
-          <Route path="team-daily-update" element={<TeamDailyUpdate/>} />  
-          <Route path="staffDeatils/:slug" element={<StaffDetail/>} />
-          <Route path="assignTaskDetails/:slug" element={<AssignTaskDetails/>} />
-          <Route path="yourTaskDetails/:slug" element={<YourTaskDetails fetchTasks={fetchTasks}/>} />
+          <Route path="add-new-team-members" element={<AddTeamMember />} />
+          <Route path="task-list" element={<YourTaskList yourTasks={yourTasks} />} />
+          <Route path="assign-task" element={<AssignTask staffData={staffData} />} />
+          <Route path="task-update" element={<TaskUpdateList />} />
+          <Route path="daily-update-form" element={<DailyUpdateFrom />} />
+          <Route path="team-daily-update" element={<TeamDailyUpdate />} />
+          <Route path="staffDeatils/:slug" element={<StaffDetail />} />
+          <Route path="assignTaskDetails/:slug" element={<AssignTaskDetails />} />
+          <Route path="yourTaskDetails/:slug" element={<YourTaskDetails fetchTasks={fetchTasks} />} />
         </Route>
       </Routes>
     </>
