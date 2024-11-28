@@ -61,7 +61,7 @@ export default function FounderRoutes() {
           <Route path="profile" element={<Profile />} />
           <Route path="employees" element={<AllEmployes employees={employees} />} />
           <Route path="add-new-staff" element={<AddNewManager departmentData={departmentData} fetchUsers={fetchUsers} />} />
-          <Route path="assign-task" element={<AssignTask staff={managers} />} />
+          <Route path="assign-task" element={<AssignTask staffData={managers} />} />
           <Route path="task-update" element={<TaskUpdateList />} />
           <Route path="departement" element={<Department departmentData={departmentData} getDepartments={getDepartments} />} />
           <Route path="staffDeatils/:slug" element={<StaffDetail/>} />
