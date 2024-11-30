@@ -274,6 +274,13 @@ export default function AttendanceChart({ staffData }) {
 
     const currentDate = new Date()
     const today = currentDate.toISOString().split("T")[0];
+
+    const formatToISODate = (year, month, day) => {
+        const date = new Date(year, month, day);
+        return date.toISOString();
+    };
+
+
     const handleAttendanceChange = (staffId, status) => {
         setAttendanceData((prevData) => {
             const updatedData = { ...prevData };
@@ -286,11 +293,16 @@ export default function AttendanceChart({ staffData }) {
         e.preventDefault();
 
         const submissionData = Object.keys(attendanceData).map((staffId) => ({
-            date: today,
+            date: formatToISODate(
+                currentDate.getFullYear(),
+                currentDate.getMonth(),
+                currentDate.getDate()
+            ), // Use formatted date
             parentId,
             staffId,
             status: attendanceData[staffId],
         }));
+
 
         try {
             await axios.post(

@@ -37,40 +37,43 @@ export default function AttendanceHistory({ staffData }) {
         }
     }, [parentId, month, year]);
 
+
     const fetchAttendanceData = async () => {
-        console.log("Fetching attendance data...");
-        try {
-            const response = await axios.get(
-                `${process.env.REACT_APP_DOMAIN_URL}/attendanceManage/get-attendance/${parentId}/${year}/${month + 1}`
-            );
-            console.log("Attendance API response:", response.data);
-            const attendanceData = response.data;
+                try {
+                    const response = await axios.get(
+                        `${process.env.REACT_APP_DOMAIN_URL}/attendanceManage/get-attendance/${parentId}/${year}/${month + 1}`
+                    );
+                    const attendanceData = response.data;
 
-            // Filter out invalid or null staffId entries
-            const validAttendanceData = attendanceData.filter(
-                (entry) => entry.staffId && entry.staffId._id
-            );
-
-            // Map valid attendance data to staff-specific objects
-            const mappedAttendance = {};
-            validAttendanceData.forEach((entry) => {
-                const day = new Date(entry.date).getDate();
-                if (!mappedAttendance[entry.staffId._id]) {
-                    mappedAttendance[entry.staffId._id] = {};
+                    console.log("attenda", attendanceData)
+        
+                    // Filter out invalid or null staffId entries
+                    const validAttendanceData = attendanceData.filter(
+                        (entry) => entry.staffId && entry.staffId._id
+                    );
+                    console.log("vallidattendance", validAttendanceData)
+        
+                    // Map valid attendance data to staff-specific objects
+                    const mappedAttendance = {};
+                    console.log("mapp", mappedAttendance)
+                    validAttendanceData.forEach((entry) => {
+                        const day = new Date(entry.date).getDate();
+                        if (!mappedAttendance[entry.staffId._id]) {
+                            mappedAttendance[entry.staffId._id] = {};
+                        }
+                        mappedAttendance[entry.staffId._id][day] = entry.status;
+                    });
+        
+                    setAttendanceByStaff(mappedAttendance);
+        
+                    console.log("validAttendanceData", validAttendanceData)
+        
+                } catch (error) {
+                    console.error("Failed to fetch attendance data:", error);
+                    toast.error("Failed to load attendance data.");
                 }
-                mappedAttendance[entry.staffId._id][day] = entry.status;
-            });
-
-            console.log("Mapped attendance data:", mappedAttendance);
-            setAttendanceByStaff(mappedAttendance);
-
-
-
-        } catch (error) {
-            console.error("Failed to fetch attendance data:", error);
-            toast.error("Failed to load attendance data.");
-        }
-    };
+            };
+    
 
 
     const handleSearchChange = (e) => {
@@ -193,6 +196,40 @@ export default function AttendanceHistory({ staffData }) {
 
 
 
+    // const fetchAttendanceData = async () => {
+    //     console.log("Fetching attendance data...");
+    //     try {
+    //         const response = await axios.get(
+    //             `${process.env.REACT_APP_DOMAIN_URL}/attendanceManage/get-attendance/${parentId}/${year}/${month + 1}`
+    //         );
+    //         console.log("Attendance API response:", response.data);
+    //         const attendanceData = response.data;
+
+    //         // Filter out invalid or null staffId entries
+    //         const validAttendanceData = attendanceData.filter(
+    //             (entry) => entry.staffId && entry.staffId._id
+    //         );
+
+    //         // Map valid attendance data to staff-specific objects
+    //         const mappedAttendance = {};
+    //         validAttendanceData.forEach((entry) => {
+    //             const day = new Date(entry.date).getDate();
+    //             if (!mappedAttendance[entry.staffId._id]) {
+    //                 mappedAttendance[entry.staffId._id] = {};
+    //             }
+    //             mappedAttendance[entry.staffId._id][day] = entry.status;
+    //         });
+
+    //         console.log("Mapped attendance data:", mappedAttendance);
+    //         setAttendanceByStaff(mappedAttendance);
+
+
+
+    //     } catch (error) {
+    //         console.error("Failed to fetch attendance data:", error);
+    //         toast.error("Failed to load attendance data.");
+    //     }
+    // };
 
 
 

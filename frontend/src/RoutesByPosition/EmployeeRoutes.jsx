@@ -4,7 +4,7 @@ import Layout from '../layout/Layout';
 import Dashboard from '../pages/employ/Dashboard';
 import DailyUpdateFrom from '../pages/DailyUpdateFrom';
 import YourTaskDetails from '../pages/YourTaskDetails';
-import YourTaskList from '../pages/teamLeader/YourTaskList';
+import YourTaskList from '../pages/employ/YourTaskList';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../authProvider/AuthProvider';
@@ -60,6 +60,7 @@ export default function EmployeeRoutes() {
           <Route path="daily-update-form" element={<DailyUpdateFrom />} />  
           <Route path="task-list" element={<YourTaskList yourTasks={yourTasks}/>} />
           <Route path="yourTaskDetails/:slug" element={<YourTaskDetails fetchTasks={fetchTasks}/>} />
+          <Route path="yourTaskDeatils/:slug" element={<YourTaskDetails/>} />
           <Route path="profile" element={<Profile />} />
         </Route>
       </Routes>

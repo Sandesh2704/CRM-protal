@@ -22,6 +22,8 @@ const submitAttendance = async (req, res) => {
     }
 };
 
+
+
 const getUserAttendance = async (req, res) => {
   const { year, month, userId } = req.params; // Retrieve year and month from the route params
   // const { userId } = req.query; // Extract userId from the query parameters
@@ -63,6 +65,36 @@ const getAttendanceByMonth = async (req, res) => {
         res.status(500).json({ message: "Failed to retrieve attendance data", error });
     }
 };
+
+// const getAttendanceByMonth = async (req, res) => {
+//   const { parentId, year, month } = req.params;
+
+//   try {
+//       // Define the start and end of the month
+//       const startDate = new Date(`${year}-${month}-01T00:00:00.000Z`);
+//       const endDate = new Date(`${year}-${month}-${new Date(year, month, 0).getDate()}T23:59:59.999Z`);
+
+//       // Fetch attendance data
+//       const attendanceData = await Attendance.find({
+//           parentId,
+//           date: {
+//               $gte: startDate, // Include all dates greater than or equal to start
+//               $lte: endDate,   // Include all dates less than or equal to end
+//           },
+//       }).populate("staffId", "username");
+
+//       // Convert all dates to ISO format
+//       const formattedAttendanceData = attendanceData.map((record) => ({
+//           ...record._doc, // Spread the existing data
+//           date: new Date(record.date).toISOString(), // Ensure ISO format for the date
+//       }));
+
+//       res.status(200).json(formattedAttendanceData);
+//   } catch (error) {
+//       console.error("Error fetching attendance data:", error);
+//       res.status(500).json({ message: "Failed to retrieve attendance data", error });
+//   }
+// };
 
 
 

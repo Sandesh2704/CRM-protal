@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 
 export default function YourTaskDetails({ fetchTasks }) {
     const { slug } = useParams();  // Corrected to use "slug"
+    console.log("slug", slug)
     const { user, token } = useAuth();
     const location = useLocation();
     const [task, setTask] = useState(location.state?.assignTaskDetails || null);
