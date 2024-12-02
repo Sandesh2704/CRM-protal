@@ -29,7 +29,7 @@ export default function SideBar({ isOpen, toggleSidebar }) {
       { path: '/manager', label: 'Dashboard', icon: <CiGrid41 /> },
       { path: '/manager/my-staff', label: 'My Staff', icon: <LuUsers2 /> },
       { path: '/manager/add-new-staff', label: 'Add New Staff', icon: <AiOutlineUserAdd /> },
-      { path: '/manager/attendance-chart', label: 'Attendance Chart', icon: <SlCalender /> },
+      { path: '/manager/attendance-chart', label: 'Attendance', icon: <SlCalender /> },
       { path: '/manager/attendance-histroy', label: 'Attendance Histroy', icon: <SlCalender /> },
       { path: '/manager/your-task', label: 'Your Task ', icon: <GrTasks /> },
       { path: '/manager/assign-task', label: 'Assign Task', icon: <CgGoogleTasks /> },
@@ -90,7 +90,7 @@ const MenuItem = ({ URL, icon, label, isOpen }) => {
       to={URL}
       className={`flex items-center group 
         ${!isOpen ? 'justify-center py-2' : 'py-2 px-3 justify-between'} 
-        ${isActive ? 'bg-gradiant text-white rounded-lg' : 'text-gray-600 hover:text-purple-500'}
+        ${isActive ? 'bg-gradiant text-white rounded-md' : 'text-gray-600 hover:text-purple-500'}
       `}
     >
       <div className='flex items-center'>

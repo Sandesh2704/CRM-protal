@@ -135,7 +135,7 @@ export default function AddTeamMember() {
   return (
     <>
       <div>
-        <PageHeader title='Add New Manager' icon={<AiOutlineUserAdd />} />
+        <PageHeader title='Add New Member' icon={<AiOutlineUserAdd />} />
       </div>
 
       <div className='w-full bg-white shadow rounded-lg py-6 px-7'>

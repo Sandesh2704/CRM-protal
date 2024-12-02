@@ -16,36 +16,16 @@ import YourTaskDetails from '../pages/YourTaskDetails.jsx';
 import Profile from '../pages/Profile.jsx';
 import TeamDailyUpdate from '../pages/TeamDailyUpdate.jsx';
 import AttendanceHistory from '../pages/manager/AttendanceHistory.jsx';
+import AttendanceDetails from '../pages/manager/AttendanceDetails.jsx';
 
 export default function ManagerRoutes() {
 
   const { user } = useAuth();
-  const parentId = user?._id;
-  
+ 
   const [ teamLeaders, setTeamLeaders  ] =useState([])
   const [ staffData, setStaffData] = useState([])
 
 
-  // const [ myStaffData, setMyStaffData] = useState([])
-  // useEffect(() => {
-  //   const fetchteamLeadersList = async () => {
-  //     if (parentId) {
-  //       try {
-  //         console.log('Fetching team members for:', parentId);
-  //         const response = await axios.get(`${process.env.REACT_APP_DOMAIN_URL}/userManage/user/${parentId}`);
-  //         console.log('Team members fetched:', response.data);
-
-  //         const users = response.data.users;
-  //         setStaffData(users);
-  //       } catch (error) {
-  //         console.error('Failed to load team members:', error.response?.data || error.message);
-  //       }
-  //     } else {
-  //       console.log("No team leader ID available");
-  //     }
-  //   };
-  //   fetchteamLeadersList();
-  // }, [parentId]);
 
   const fetchUsers = async () => {
     try {
@@ -89,6 +69,7 @@ export default function ManagerRoutes() {
           <Route path="staffDeatils/:slug" element={<StaffDetail/>} />
           <Route path="assignTaskDetails/:slug" element={<AssignTaskDetails/>} />
           <Route path="yourTaskDeatils/:slug" element={<YourTaskDetails/>} />
+          <Route path="attendance-history/:staffId" element={<AttendanceDetails/>} />
           <Route path="profile" element={<Profile />} />
           <Route path="team-daily-update" element={<TeamDailyUpdate/>} />  
         </Route>
@@ -96,3 +77,26 @@ export default function ManagerRoutes() {
     </>
   )
 }
+
+
+
+  // const [ myStaffData, setMyStaffData] = useState([])
+  // useEffect(() => {
+  //   const fetchteamLeadersList = async () => {
+  //     if (parentId) {
+  //       try {
+  //         console.log('Fetching team members for:', parentId);
+  //         const response = await axios.get(`${process.env.REACT_APP_DOMAIN_URL}/userManage/user/${parentId}`);
+  //         console.log('Team members fetched:', response.data);
+
+  //         const users = response.data.users;
+  //         setStaffData(users);
+  //       } catch (error) {
+  //         console.error('Failed to load team members:', error.response?.data || error.message);
+  //       }
+  //     } else {
+  //       console.log("No team leader ID available");
+  //     }
+  //   };
+  //   fetchteamLeadersList();
+  // }, [parentId]);

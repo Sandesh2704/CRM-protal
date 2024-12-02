@@ -116,7 +116,7 @@ export default function DailyUpdateForm() {
                             <div className={`group p-2 bg-gradiant text-xl text-white rounded-md cursor-pointer`}>
                                 <RiFileHistoryFill />
                             </div>
-                            <h1 className='font-medium text-xl'>Attendance History</h1>
+                            <h1 className='font-medium text-xl'>Update History</h1>
                         </div>
                         <div className="flex justify-end gap-2 items-center">
                             <select
