@@ -255,94 +255,129 @@
 
 
 
-import React, { useState } from "react";
+// import React, { useState } from "react";
+// import axios from "axios";
+// import { useAuth } from "../../authProvider/AuthProvider";
+// import PageHeader from "../../component/PageHeader";
+// import { FaCalendarDays } from "react-icons/fa6";
+// import { toast } from "react-toastify";
+// import Swal from "sweetalert2";
+
+
+
+
+
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../authProvider/AuthProvider";
 import PageHeader from "../../component/PageHeader";
 import { FaCalendarDays } from "react-icons/fa6";
-import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-
+import Button from '../../component/Button';
+import { toast } from "react-toastify";
 
 export default function AttendanceChart({ staffData }) {
     const { user } = useAuth();
     const parentId = user?._id;
-    console.log("User:", user);
 
-    const [attendanceData, setAttendanceData] = useState([]);
+    const [attendanceData, setAttendanceData] = useState({});
+    const [submittedAttendance, setSubmittedAttendance] = useState({});
+    const [isAttendanceFetched, setIsAttendanceFetched] = useState(false);
 
-
-    const currentDate = new Date()
+    const currentDate = new Date();
     const today = currentDate.toISOString().split("T")[0];
 
-    const formatToISODate = (year, month, day) => {
-        const date = new Date(year, month, day);
-        return date.toISOString();
+    // Fetch attendance for today
+    const fetchTodayAttendance = async () => {
+        try {
+            const response = await axios.get(
+                `${process.env.REACT_APP_DOMAIN_URL}/attendanceManage/today-attendance/${parentId}`
+            );
+            const todayAttendance = response.data.reduce((acc, item) => {
+                acc[item.staffId._id] = item.status;
+                return acc;
+            }, {});
+            setSubmittedAttendance(todayAttendance);
+        } catch (error) {
+            console.error("Failed to fetch today's attendance:", error);
+        } finally {
+            setIsAttendanceFetched(true);
+        }
     };
 
+    useEffect(() => {
+        fetchTodayAttendance();
+    }, []);
 
     const handleAttendanceChange = (staffId, status) => {
-        setAttendanceData((prevData) => {
-            const updatedData = { ...prevData };
-            updatedData[staffId] = status;
-            return updatedData;
-        });
+        setAttendanceData((prevData) => ({
+            ...prevData,
+            [staffId]: status,
+        }));
     };
 
     const handleSubmitAll = async (e) => {
         e.preventDefault();
 
+         // Check if any attendance data is filled
+    if (Object.keys(attendanceData).length === 0) {
+        toast.error("Please mark attendance for at least one staff member.", {
+            position: "top-right",
+            autoClose: 3000,
+        });
+        return;
+    }
+
+
         const submissionData = Object.keys(attendanceData).map((staffId) => ({
-            date: formatToISODate(
-                currentDate.getFullYear(),
-                currentDate.getMonth(),
-                currentDate.getDate()
-            ), // Use formatted date
+            date: today,
             parentId,
             staffId,
             status: attendanceData[staffId],
         }));
-
 
         try {
             await axios.post(
                 `${process.env.REACT_APP_DOMAIN_URL}/attendanceManage/submit-attendance`,
                 { parentId, attendance: submissionData }
             );
-
             Swal.fire({
-                title: 'Attendance submitted successfully',
-                icon: 'success',
-                confirmButtonText: 'OK',
-                customClass: { popup: 'custom-popup' },
+                title: "Attendance submitted successfully",
+                icon: "success",
+                confirmButtonText: "OK",
+                customClass: { popup: "custom-popup" },
             });
-
+            fetchTodayAttendance(); // Refresh attendance data
         } catch (error) {
-            toast.error(`Failed to submit attendance data: ${error.response?.data || error.message}`, {
-                position: 'top-right',
-                autoClose: 3000,
+            Swal.fire({
+                title: "Error",
+                text: error.response?.data.message || "Failed to submit attendance.",
+                icon: "error",
+                confirmButtonText: "OK",
             });
         }
     };
 
-
+    if (!isAttendanceFetched) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <>
             <PageHeader title="Attendance" icon={<FaCalendarDays />} />
 
-            <div className='flex justify-center items-center mb-7 mt-10 gap-6'>
-                <div className='h-[1px] w-full bg-gradient-to-r from-blue-400 to-purple-400 flex-1' />
-                <h2 className='text-gray-600 text-base'>{today}</h2>
-                <div className='h-[1px] w-full bg-gradient-to-l from-blue-400 to-purple-400 flex-1' />
+            <div className="flex justify-center items-center mb-7 mt-10 gap-6">
+                <div className="h-[1px] w-full bg-gradient-to-r from-blue-400 to-purple-400 flex-1" />
+                <h2 className="text-gray-600 text-base">{today}</h2>
+                <div className="h-[1px] w-full bg-gradient-to-l from-blue-400 to-purple-400 flex-1" />
             </div>
-
 
             <div className="w-full bg-white shadow rounded-lg py-6 px-7">
                 <form onSubmit={handleSubmitAll} className="w-full overflow-x-auto">
-                    <table className="w-full overflow-x-auto">
-                        <thead className="text-base font-medium border-b">
-                            <tr className="">
+                    <table className="w-full">
+                        <thead className="text-base font-medium border-b ">
+                            <tr>
+                                <th className="py-4">Sr No.</th>
                                 <th className="py-4">Staff Member</th>
                                 <th className="py-4">Present</th>
                                 <th className="py-4">Absent</th>
@@ -352,61 +387,34 @@ export default function AttendanceChart({ staffData }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {staffData.map((staff) => (
-                                <tr key={staff._id} className="text-center  border-b text-gray-900">
-                                    <td className="py-4 border-b">{staff.username}</td>
-                                    <td className="py-4 border-b">
-                                        <input
-                                            type="radio"
-                                            name={`attendance-${staff._id}`}
-                                            value="Present"
-                                            checked={attendanceData[staff._id] === "Present"}
-                                            onChange={() => handleAttendanceChange(staff._id, "Present")}
-                                            className="form-radio text-green-600"
-                                        />
-                                    </td>
-                                    <td className=" py-4 border-b">
-                                        <input
-                                            type="radio"
-                                            name={`attendance-${staff._id}`}
-                                            value="Absent"
-                                            checked={attendanceData[staff._id] === "Absent"}
-                                            onChange={() => handleAttendanceChange(staff._id, "Absent")}
-                                            className="form-radio text-red-600"
-                                        />
-                                    </td>
-                                    <td className=" py-4 border-b">
-                                        <input
-                                            type="radio"
-                                            name={`attendance-${staff._id}`}
-                                            value="Leave"
-                                            checked={attendanceData[staff._id] === "Leave"}
-                                            onChange={() => handleAttendanceChange(staff._id, "Leave")}
-                                            className="form-radio text-yellow-600"
-                                        />
-                                    </td>
-
-                                    <td className=" py-4 border-b">
-                                        <input
-                                            type="radio"
-                                            name={`attendance-${staff._id}`}
-                                            value="Half Day"
-                                            checked={attendanceData[staff._id] === "Half Day"}
-                                            onChange={() => handleAttendanceChange(staff._id, "Half Day")}
-                                            className="form-radio text-green-600"
-                                        />
-                                    </td>
-
-                                    <td className=" py-4 border-b">
-                                        <input
-                                            type="radio"
-                                            name={`attendance-${staff._id}`}
-                                            value="Late Mark"
-                                            checked={attendanceData[staff._id] === "Late Mark"}
-                                            onChange={() => handleAttendanceChange(staff._id, "Late Mark")}
-                                            className="form-radio text-green-600"
-                                        />
-                                    </td>
+                            {staffData.map((staff, index) => (
+                                <tr
+                                    key={staff._id}
+                                    className={`text-center border-b ${
+                                        submittedAttendance[staff._id] ? "bg-[#e710d4] text-white opacity-30" : ""
+                                    }`}
+                                >
+                                    <td className="py-4">{index + 1}</td>
+                                    <td className="py-4">{staff.username}</td>
+                                    {["Present", "Absent", "Leave", "Half Day", "Late Mark"].map((status) => (
+                                        <td className="py-4" key={status}>
+                                            <input
+                                                type="radio"
+                                                name={`attendance-${staff._id}`}
+                                                value={status}
+                                                checked={attendanceData[staff._id] === status}
+                                                onChange={() => handleAttendanceChange(staff._id, status)}
+                                                className={`form-radio ${
+                                                    status === "Present"
+                                                        ? "text-green-600 bg-green-600"
+                                                        : status === "Absent"
+                                                        ? "text-red-600"
+                                                        : "text-yellow-600"
+                                                }`}
+                                                disabled={!!submittedAttendance[staff._id]}
+                                            />
+                                        </td>
+                                    ))}
                                 </tr>
                             ))}
                         </tbody>
@@ -414,8 +422,9 @@ export default function AttendanceChart({ staffData }) {
                     <div className="flex justify-center mt-6">
                         <button
                             type="submit"
-                            className={`w-fit bg-blue-600 py-2 px-7 rounded-lg text-white `}>
-                            Submit Attendance
+                        >
+                            <Button title="Submit Attendance"/>
+                            
                         </button>
                     </div>
                 </form>

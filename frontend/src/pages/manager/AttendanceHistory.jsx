@@ -358,7 +358,7 @@ export default function AttendanceHistory({ staffData }) {
     const [query, setQuery] = useState("");
   
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 6;
+    const itemsPerPage = 16;
 
 
     const handleSearchChange = (e) => {
@@ -404,11 +404,11 @@ export default function AttendanceHistory({ staffData }) {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
                 {currentStaffData.map((staff) => (
-                    <div key={staff._id} className="bg-white shadow rounded-lg py-6 px-4 lg:px-6">
+                    <div key={staff._id} className="bg-white shadow rounded-lg py-6 px-4 lg:px-6  text-center">
                         <h2
-                            className="text-xl font-semibold mb-4 text-center"
+                            className="text-xl font-semibold mb-4"
                             dangerouslySetInnerHTML={{
                                 __html: highlightMatch(staff.username || ""),
                             }}
@@ -418,10 +418,12 @@ export default function AttendanceHistory({ staffData }) {
                             state={{
                                 staff
                             }}
-                            className="text-blue-600 hover:underline"
+                              className="text-xs text-indigo-500 italic hover:underline hover:text-indigo-600 font-medium"
                         >
                             View Attendance Calendar
                         </Link>
+
+                        
                     </div>
                 ))}
             </div>

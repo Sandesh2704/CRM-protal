@@ -5,7 +5,7 @@ export default function CountingCard({ items, lebal }) {
         <div>
             <div className='bg-white shadow shadow-black/5  rounded-lg'>
                 <div className='px-5 py-4 border-b border-dotted'>
-                    <h3 className='text-base sm:text-lg'>{lebal} </h3>
+                    <h3 className='text-base text-black sm:text-lg'>{lebal} </h3>
                 </div>
                 <div className='px-5 py-5'>
                     <div>

@@ -25,7 +25,7 @@ const getUsers = async (req, res) => {
 
 const addUser = async (req, res) => {
     try {
-        const { parentId, username, email, number, password,department, jobPosition, jobRole, city, state, gender, joiningDate } = req.body;
+        const { parentId, username, email, number, password, department, jobPosition, jobRole, city, state, gender, joiningDate } = req.body;
 
         const profileIMG = req.file ? req.file.path : null;
 
@@ -43,20 +43,20 @@ const addUser = async (req, res) => {
             'Manager': ['Team Leader', 'Employee'],
             'Team Leader': 'Employee',
         };
-        
+
         // Check if the parent's role matches the validRoles map for the child role
         const expectedRoles = validRoles[parentUser.jobPosition];
-        
+
         // If `expectedRoles` is an array, check if it includes `jobPosition`. Otherwise, compare directly.
         if (Array.isArray(expectedRoles)) {
             if (!expectedRoles.includes(jobPosition)) {
-               return res.status(400).json({ message: `Invalid parent for ${jobPosition}.` });
+                return res.status(400).json({ message: `Invalid parent for ${jobPosition}.` });
             }
         } else if (expectedRoles !== jobPosition) {
             return res.status(400).json({ message: `Invalid parent for ${jobPosition}.` });
         }
 
-        
+
 
         // Check if email is already registered
         const existingUser = await User.findOne({ email });
@@ -94,39 +94,39 @@ const addUser = async (req, res) => {
 
 const editUser = async (req, res) => {
     try {
-    // Log uploaded file
-  
-      const { userId } = req.params;
-      const { username, email, number, department, jobPosition, jobRole, city, state, gender, joiningDate } = req.body;
-  
-      const user = await User.findById(userId);
-      if (!user) {
+        // Log uploaded file
 
-        return res.status(404).json({ message: 'User not found.' });
-      }
-  
-      if (req.file) {
-        user.profileIMG = req.file.path;
-      }
-  
-      if (username) user.username = username;
-      if (email) user.email = email;
-      if (number) user.number = number;
-      if (department) user.department = department;
-      if (jobPosition) user.jobPosition = jobPosition;
-      if (jobRole) user.jobRole = jobRole;
-      if (city) user.city = city;
-      if (state) user.state = state;
-      if (gender) user.gender = gender;
-      if (joiningDate) user.joiningDate = joiningDate;
-  
-      await user.save();
-  
+        const { userId } = req.params;
+        const { username, email, number, department, jobPosition, jobRole, city, state, gender, joiningDate } = req.body;
 
-      res.status(200).json({ message: 'User profile updated successfully.', user });
+        const user = await User.findById(userId);
+        if (!user) {
+
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        if (req.file) {
+            user.profileIMG = req.file.path;
+        }
+
+        if (username) user.username = username;
+        if (email) user.email = email;
+        if (number) user.number = number;
+        if (department) user.department = department;
+        if (jobPosition) user.jobPosition = jobPosition;
+        if (jobRole) user.jobRole = jobRole;
+        if (city) user.city = city;
+        if (state) user.state = state;
+        if (gender) user.gender = gender;
+        if (joiningDate) user.joiningDate = joiningDate;
+
+        await user.save();
+
+
+        res.status(200).json({ message: 'User profile updated successfully.', user });
     } catch (err) {
-      res.status(500).json({ message: 'Server error', error: err.message });
+        res.status(500).json({ message: 'Server error', error: err.message });
     }
-  };
-  
+};
+
 module.exports = { addUser, getUsers, editUser };
