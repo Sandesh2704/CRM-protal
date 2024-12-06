@@ -406,7 +406,13 @@ export default function AttendanceHistory({ staffData }) {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
                 {currentStaffData.map((staff) => (
-                    <div key={staff._id} className="bg-white shadow rounded-lg py-6 px-4 lg:px-6  text-center">
+                    <Link
+                    to={`/manager/attendance-history/${staff._id}`}
+                    state={{
+                        staff
+                    }} 
+                    key={staff._id} 
+                    className="bg-white shadow rounded-lg py-6 px-4 lg:px-6  text-center">
                         <h2
                             className="text-xl font-semibold mb-4"
                             dangerouslySetInnerHTML={{
@@ -424,7 +430,7 @@ export default function AttendanceHistory({ staffData }) {
                         </Link>
 
                         
-                    </div>
+                    </Link >
                 ))}
             </div>
 

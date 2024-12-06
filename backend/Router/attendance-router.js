@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { submitAttendance,getAttendanceByMonth, getUserAttendance, updateAttendance, getTodayAttendance,  } = require("../controller/attendance-controller");
+const { submitAttendance,getAttendanceByMonth, getUserAttendance, updateAttendance, getAttendanceByDate  } = require("../controller/attendance-controller");
 
 router.get("/", (req, res) => {
     res.status(200).send("Welcome to Attendance System");
@@ -14,6 +14,6 @@ router.get("/my-attendance/:userId/:year/:month", getUserAttendance);
 
 router.put("/update-attendance", updateAttendance); 
 
-router.get("/today-attendance/:parentId", getTodayAttendance); // New route
+router.get("/today-attendance/:parentId/:date", getAttendanceByDate); // New route
 
 module.exports = router;

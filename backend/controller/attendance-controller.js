@@ -1,14 +1,15 @@
 const Attendance = require("../models/attendance-model");
 
-const getTodayAttendance = async (req, res) => {
-  const { parentId } = req.params;
-  const today = new Date().toISOString().split("T")[0];
+
+// Fetch attendance by date
+const getAttendanceByDate = async (req, res) => {
+  const { parentId, date } = req.params;
 
   try {
-      const attendance = await Attendance.find({ parentId, date: today }).populate("staffId", "username");
+      const attendance = await Attendance.find({ parentId, date }).populate("staffId", "username");
       res.status(200).json(attendance);
   } catch (error) {
-      res.status(500).json({ message: "Failed to fetch today's attendance", error });
+      res.status(500).json({ message: "Failed to fetch attendance for the specified date", error });
   }
 };
 
@@ -91,6 +92,41 @@ const getUserAttendance = async (req, res) => {
 };
 
 
+// const updateAttendance = async (req, res) => {
+//   const { parentId, staffId, date, newStatus } = req.body;
+
+//   if (!parentId || !staffId || !date || !newStatus) {
+//     return res.status(400).json({ message: "Missing required fields" });
+//   }
+
+//   try {
+//     // Check if attendance already exists for the given date and staffId
+//     let attendance = await Attendance.findOne({ parentId, staffId, date });
+
+//     if (attendance) {
+//       // If attendance exists, update the status
+//       attendance.status = newStatus;
+//       await attendance.save();
+//       return res.status(200).json({ message: "Attendance updated successfully", attendance });
+//     } else {
+//       // If attendance does not exist, create a new attendance record
+//       attendance = new Attendance({
+//         parentId,
+//         staffId,
+//         date,
+//         status: newStatus,
+//       });
+//       await attendance.save();
+//       return res.status(201).json({ message: "Attendance created successfully", attendance });
+//     }
+//   } catch (error) {
+//     console.log("Error updating or creating attendance:", error);
+//     res.status(500).json({ message: "Failed to update or create attendance", error });
+//   }
+// ;
+// }
+
+
 const updateAttendance = async (req, res) => {
   const { parentId, staffId, date, newStatus } = req.body;
 
@@ -99,8 +135,11 @@ const updateAttendance = async (req, res) => {
   }
 
   try {
+    // Convert date to ISO string to remove potential timezone issues
+    const formattedDate = new Date(date).toISOString().split("T")[0]; // Only keep YYYY-MM-DD
+
     // Check if attendance already exists for the given date and staffId
-    let attendance = await Attendance.findOne({ parentId, staffId, date });
+    let attendance = await Attendance.findOne({ parentId, staffId, date: formattedDate });
 
     if (attendance) {
       // If attendance exists, update the status
@@ -112,7 +151,7 @@ const updateAttendance = async (req, res) => {
       attendance = new Attendance({
         parentId,
         staffId,
-        date,
+        date: formattedDate,
         status: newStatus,
       });
       await attendance.save();
@@ -125,5 +164,8 @@ const updateAttendance = async (req, res) => {
 };
 
 
-module.exports = { submitAttendance, getAttendanceByMonth, getUserAttendance, updateAttendance, getTodayAttendance};
+
+
+
+module.exports = { submitAttendance, getAttendanceByMonth, getUserAttendance, updateAttendance, getAttendanceByDate};
 

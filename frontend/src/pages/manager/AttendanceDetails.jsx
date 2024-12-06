@@ -292,10 +292,19 @@ export default function AttendanceDetails() {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstDayOfMonth = new Date(year, month, 1).getDay();
 
-    const formatToISODate = (year, month, day) => {
+    // const formatToISODate = (year, month, day) => {
+    //     const date = new Date(year, month, day);
+    //     return date.toISOString().split("T")[0]; // Only keep YYYY-MM-DD
+    //   };
+
+      const formatToISODate = (year, month, day) => {
         const date = new Date(year, month, day);
-        return date.toISOString();
-    };
+        // Use Date methods to extract year, month, and day, ensuring local time is used
+        const isoDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(
+          date.getDate()
+        ).padStart(2, "0")}`;
+        return isoDate;
+      };
 
     const fetchAttendanceData = async () => {
         try {
@@ -393,7 +402,10 @@ export default function AttendanceDetails() {
         }
     };
 
-    // Handle month change
+   
+ 
+   
+
     const onMonthChange = (newMonth) => {
         setMonth(newMonth);
     };
@@ -450,10 +462,10 @@ export default function AttendanceDetails() {
 
             <div className='grid grid-cols-12 gap-7 '>
 
-                <div className="col-span-9 bg-white shadow rounded-lg py-6 px-4 lg:px-6">
+                <div className="col-span-12 lg:col-span-9 bg-white shadow rounded-lg py-6 px-4 lg:px-6">
                     <div className="grid grid-cols-7 text-center font-medium mb-2 text-gray-700">
                         {daysOfWeek.map((day) => (
-                            <div key={day}>{day}</div>
+                            <div key={day} className="cursor-pointer">{day}</div>
                         ))}
                     </div>
 
@@ -474,7 +486,7 @@ export default function AttendanceDetails() {
                             return (
                                 <div key={day}>
                                     <div
-                                        className={`${bgColor} border h-16 flex justify-end items-end p-2 rounded-md relative`}
+                                        className={`${bgColor} cursor-pointer border h-16 flex justify-end items-end p-2 rounded-md relative`}
                                         onClick={() => setSelectedDate(day)}
                                     >
                                         <h1 className="text-sm">{day}</h1>
@@ -494,7 +506,7 @@ export default function AttendanceDetails() {
                                                 </select>
                                                 <button
                                                     onClick={() => updateAttendance(day)}
-                                                    className="bg-gradiant text-white p-1 mt-1 w-full rounded"
+                                                    className="bg-gradiant text-white px-1 py-2 mt-1 w-full rounded"
                                                 >
                                                     Submit
                                                 </button>
@@ -510,11 +522,11 @@ export default function AttendanceDetails() {
                 </div>
 
 
-                <div className="col-span-3 bg-white shadow rounded-lg py-6 px-4 lg:px-6">
+                <div className="col-span-12 lg:col-span-3 bg-white shadow rounded-lg py-6 px-4 lg:px-6">
                     <h2 className="font-semibold text-lg">Attendance Summary</h2>
-                    <div className="flex flex-col gap-3 mt-4">
+                    <div className="grid grid-cols-2 md:grid-cols-5 lg:flex flex-col gap-3 mt-4">
                         {Object.entries(attendanceStats).map(([status, count]) => (
-                            <div key={status} className={`py-3 px-3 border flex gap-3 rounded-md w-full ${statusColors[status]}`}>
+                            <div key={status} className={`py-3 px-3 border flex  gap-1 lg:gap-3 rounded-md w-full ${statusColors[status]}`}>
                                  <h3 className="font-medium">{status}:</h3>
                                  <p>{attendanceStats[status]} Days</p>
                             </div>

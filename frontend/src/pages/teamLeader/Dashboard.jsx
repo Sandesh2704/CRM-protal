@@ -29,7 +29,7 @@ export default function Dashboard({ staffData, yourPendingTasks, yourTasks }) {
       const response = await axios.get(
         `${process.env.REACT_APP_DOMAIN_URL}/attendanceManage/my-attendance/${userId}/${year}/${month + 1}`
       );
-      
+
       const attendanceMap = response.data.reduce((acc, entry) => {
         const date = new Date(entry.date).getDate();
         acc[date] = entry.status; // Store attendance status directly by day
