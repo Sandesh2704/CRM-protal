@@ -16,6 +16,9 @@ export default function Layout() {
       if (window.innerWidth <= 1000) {
         setIsOpen(false);
       }
+      if (window.innerWidth <= 600) {
+        setIsOpen(true);
+      }
     };
 
     handleResize();

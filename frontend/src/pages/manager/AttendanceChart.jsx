@@ -452,11 +452,11 @@ export default function AttendanceChart({ staffData }) {
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0]);
 
     const statusColors = {
-        Present: "bg-green-600 text-white font-bold",
-        Absent: "bg-red-600 text-white font-bold",
-        Leave: "bg-yellow-500 text-white font-bold",
-        "Half Day": "bg-blue-600 text-white font-bold",
-        "Late Mark": "bg-purple-500 text-white font-bold",
+        Present: "bg-green-600 text-white font-bold accent-green-600",
+        Absent: "bg-red-600 text-white font-bold accent-red-600",
+        Leave: "bg-yellow-500 text-white font-bold accent-yellow-500",
+        "Half Day": "bg-blue-600 text-white font-bold accent-blue-600",
+        "Late Mark": "bg-purple-500 text-white font-bold accent-purple-500",
     };
 
     // Fetch attendance for selected date
@@ -594,7 +594,7 @@ export default function AttendanceChart({ staffData }) {
                                                     value={status}
                                                     checked={attendanceData[staff._id] === status}
                                                     onChange={() => handleAttendanceChange(staff._id, status)}
-                                                    className="form-radio cursor-pointer"
+                                                    className={`h-3 w-3 cursor-pointer ${statusColors[status]}`}
                                                     disabled={!!submittedAttendance[staff._id]}
                                                 />
                                             )}

@@ -100,10 +100,11 @@ export default function TeamDailyUpdate() {
         const tableHeaders = ["Sn.", "Name", "Job Role", "Project Name", "Work Update"];
         const tableRows = filteredUpdates.map((item, index) => [
             index + 1,
-            item.user.username,
-            item.user.jobRole,
-            item.projectName,
-            item.description,
+            item.user?.username || "N/A", // Use "N/A" if username is null or undefined
+            item.user?.department || "N/A", // Use "N/A" if department is null or undefined
+            item.user?.jobRole || "N/A", // Use "N/A" if jobRole is null or undefined
+            item.projectName || "N/A", // Use "N/A" if projectName is null or undefined
+            item.description || "N/A", // Use "N/A" if description is null or undefined
         ]);
 
         // Add table with custom column widths
@@ -156,12 +157,13 @@ export default function TeamDailyUpdate() {
 
             // Prepare table data for the date
             const tableHeaders = ["Sn.", "Name", "Job Role", "Project Name", "Work Update"];
-            const tableRows = groupedUpdates[date].map((item, index) => [
+              const tableRows = filteredUpdates.map((item, index) => [
                 index + 1,
-                item.user.username,
-                item.user.jobRole,
-                item.projectName,
-                item.description,
+                item.user?.username || "N/A", // Use "N/A" if username is null or undefined
+                item.user?.department || "N/A", // Use "N/A" if department is null or undefined
+                item.user?.jobRole || "N/A", // Use "N/A" if jobRole is null or undefined
+                item.projectName || "N/A", // Use "N/A" if projectName is null or undefined
+                item.description || "N/A", // Use "N/A" if description is null or undefined
             ]);
 
             // Add table
@@ -222,10 +224,11 @@ export default function TeamDailyUpdate() {
         const tableHeaders = ["Sn.", "Name", "Job Role", "Project Name", "Work Update"];
         const tableRows = filteredUpdates.map((item, index) => [
             index + 1,
-            item.user.username,
-            item.user.jobRole,
-            item.projectName,
-            item.description,
+            item.user?.username || "N/A", // Use "N/A" if username is null or undefined
+            item.user?.department || "N/A", // Use "N/A" if department is null or undefined
+            item.user?.jobRole || "N/A", // Use "N/A" if jobRole is null or undefined
+            item.projectName || "N/A", // Use "N/A" if projectName is null or undefined
+            item.description || "N/A", // Use "N/A" if description is null or undefined
         ]);
 
         // Add table with custom column widths

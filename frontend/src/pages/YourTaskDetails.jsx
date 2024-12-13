@@ -41,10 +41,10 @@ export default function YourTaskDetails({ fetchTasks }) {
 
     const handleUpdateSubmit = async () => {
         // Validation
-        if (updateDescription.length < 20) {
-            toast.error("Description must be at least 20 characters long.");
-            return;
-        }
+        // if (updateDescription.length < 20) {
+        //     toast.error("Description must be at least 20 characters long.");
+        //     return;
+        // }
 
         if (!taskStatus || !['Pending', 'Complete', 'Delay'].includes(taskStatus)) {
             toast.error("Please select a valid status (pending, complete, or delay).");

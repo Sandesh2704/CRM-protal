@@ -12,6 +12,7 @@ import { AiOutlineUserAdd } from "react-icons/ai";
 import { checkUserExists, validateInputs } from '../../userValidation/UserValidation';
 import { toast } from 'react-toastify';
 
+
 export default function AddnewStaff({ fetchUsers, departmentData }) {
   const { user } = useAuth();
   const parentId = user?._id;
@@ -51,44 +52,53 @@ export default function AddnewStaff({ fetchUsers, departmentData }) {
     }));
   };
 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    formData.append('parentId', parentId);
-
-    for (const key in newStaff) {
-      formData.append(key, newStaff[key]);
-    }
-
-     // Validate inputs before submission
-     if (!validateInputs(newStaff)) return;
-
-     // Check if the user already exists
-     const userExists = await checkUserExists(newStaff.email, newStaff.number);
-     if (userExists) return;
-
-     if (!newStaff.department) {
-      toast.error('Department are required.', {
-          position: 'top-right',
-          autoClose: 3000,
+  
+    // Validate inputs before submission
+    if (!validateInputs(newStaff)) return;
+  
+    // Check if the user already exists
+    const userExists = await checkUserExists(newStaff.email, newStaff.number);
+    if (userExists) return;
+  
+    if (!newStaff.department) {
+      toast.error('Department is required.', {
+        position: 'top-right',
+        autoClose: 3000,
       });
       return false;
-  }
+    }
+  
 
+      // Prepare staff data
+  const staffData = {
+    ...newStaff,
+    profileIMG: newStaff.profileIMG , // Ensure the fakeimage is used when no image is provided
+    parentId,
+  };
+
+  
     try {
-      const response = await axios.post(`${process.env.REACT_APP_DOMAIN_URL}/userManage/user/add`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_DOMAIN_URL}/userManage/user/add`,
+        staffData, // Send the staff data directly
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
       console.log('Response from server:', response.data);
-
+  
+      // Reset the form after successful submission
       setNewStaf({
         username: '',
         email: '',
         number: '',
         password: '',
-        jobPosition: "Manager",
-        department: "",
+        jobPosition: 'Manager',
+        department: '',
         profileIMG: null,
         city: '',
         state: '',
@@ -96,17 +106,15 @@ export default function AddnewStaff({ fetchUsers, departmentData }) {
         joiningDate: '',
       });
       setPreviewSrc('');
-
+  
       fetchUsers();
-
+  
       Swal.fire({
         title: 'Manager added successfully!',
         icon: 'success',
         confirmButtonText: 'OK',
         customClass: { popup: 'custom-popup' },
       });
-
-      // Fetch updated managers after adding a new one
     } catch (error) {
       console.error('Error adding manager:', error.response?.data || error.message);
       Swal.fire({
@@ -118,6 +126,7 @@ export default function AddnewStaff({ fetchUsers, departmentData }) {
       });
     }
   };
+  
 
   const deleteImage = () => {
     setNewStaf((prev) => ({ ...prev, profileIMG: null }));
@@ -258,3 +267,73 @@ export default function AddnewStaff({ fetchUsers, departmentData }) {
     </>
   );
 }
+
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   const formData = new FormData();
+  //   formData.append('parentId', parentId);
+
+  //   for (const key in newStaff) {
+  //     formData.append(key, newStaff[key]);
+  //   }
+
+  //    // Validate inputs before submission
+  //    if (!validateInputs(newStaff)) return;
+
+  //    // Check if the user already exists
+  //    const userExists = await checkUserExists(newStaff.email, newStaff.number);
+  //    if (userExists) return;
+
+  //    if (!newStaff.department) {
+  //     toast.error('Department are required.', {
+  //         position: 'top-right',
+  //         autoClose: 3000,
+  //     });
+  //     return false;
+  // }
+
+  //   try {
+  //     const response = await axios.post(`${process.env.REACT_APP_DOMAIN_URL}/userManage/user/add`, formData, {
+  //       headers: { 'Content-Type': 'multipart/form-data' },
+  //     });
+  //     console.log('Response from server:', response.data);
+
+  //     setNewStaf({
+  //       username: '',
+  //       email: '',
+  //       number: '',
+  //       password: '',
+  //       jobPosition: "Manager",
+  //       department: "",
+  //       profileIMG: null,
+  //       city: '',
+  //       state: '',
+  //       gender: '',
+  //       joiningDate: '',
+  //     });
+  //     setPreviewSrc('');
+
+  //     fetchUsers();
+
+  //     Swal.fire({
+  //       title: 'Manager added successfully!',
+  //       icon: 'success',
+  //       confirmButtonText: 'OK',
+  //       customClass: { popup: 'custom-popup' },
+  //     });
+
+  //     // Fetch updated managers after adding a new one
+  //   } catch (error) {
+  //     console.error('Error adding manager:', error.response?.data || error.message);
+  //     Swal.fire({
+  //       title: 'Error!',
+  //       text: error.response?.data?.message || 'An error occurred while adding the manager.',
+  //       icon: 'error',
+  //       confirmButtonText: 'OK',
+  //       customClass: { popup: 'custom-popup' },
+  //     });
+  //   }
+  // };

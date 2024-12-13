@@ -1,5 +1,5 @@
 import React from 'react'
-
+import fakeimage from "../assets/fake-img2.webp"
 import { useLocation } from 'react-router-dom';
 import ProfileField from '../component/ProfileField';
 export default function StaffDetail() {
@@ -10,8 +10,7 @@ export default function StaffDetail() {
     return <div>No member details available.</div>;
   }
 
-  const { profileIMG, username, email, number, department, jobPosition, jobRole, city, state, gender, joiningDate
-  } = staffDetails;
+  const { profileIMG, username, email, number, department, jobPosition, jobRole, city, state, gender, joiningDate, dateOfBirth } = staffDetails;
   return (
     <>
       <div className='w-full bg-white shadow rounded-lg mt-7'>
@@ -22,7 +21,9 @@ export default function StaffDetail() {
 
           <div className='relative px-4  lg:px-7 grid grid-cols-12  z-10 flex flex-col md:flex-row justify-start  gap-7 '>
             <div className='pt-6 lg:pb-6 h-fit col-span-12 lg:col-span-5 xl:col-span-4 flex justify-center'>
-              <img src={`${process.env.REACT_APP_DOMAIN_URL}/${profileIMG}`} alt={username} className='w-96 h-96 rounded-lg  transition-all duration-500 hover:filter hover:grayscale-[80%] hover:brightness-[90%]' />
+              <img
+                src={profileIMG ? `${process.env.REACT_APP_DOMAIN_URL}/${profileIMG}` : fakeimage}
+                alt={username} className='w-96 h-96 rounded-lg  transition-all duration-500 hover:filter hover:grayscale-[80%] hover:brightness-[90%]' />
             </div>
 
 
@@ -42,6 +43,7 @@ export default function StaffDetail() {
                 <ProfileField label="City" value={city} />
                 <ProfileField label="State" value={state} />
                 <ProfileField label="Gender" value={gender} />
+                <ProfileField label="Date Of Birth" value={dateOfBirth} />
                 <ProfileField label="Email" value={email} />
               </div>
             </div>

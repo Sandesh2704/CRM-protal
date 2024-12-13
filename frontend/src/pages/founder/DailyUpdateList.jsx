@@ -13,6 +13,8 @@ export default function DailyUpdateList() {
     const [dailyUpdates, setDailyUpdates] = useState([]);
     const { token } = useAuth();
 
+    console.log('dailyUpdates', dailyUpdates)
+
     useEffect(() => {
         const fetchUpdates = async () => {
             try {
@@ -105,11 +107,11 @@ export default function DailyUpdateList() {
         const tableHeaders = ["Sn.", "Name", "Department", "Job Role", "Project Name", "Work Update"];
         const tableRows = filteredUpdates.map((item, index) => [
             index + 1,
-            item.user.username,
-            item.user.department,
-            item.user.jobRole,
-            item.projectName,
-            item.description,
+            item.user?.username || "N/A", // Use "N/A" if username is null or undefined
+            item.user?.department || "N/A", // Use "N/A" if department is null or undefined
+            item.user?.jobRole || "N/A", // Use "N/A" if jobRole is null or undefined
+            item.projectName || "N/A", // Use "N/A" if projectName is null or undefined
+            item.description || "N/A", // Use "N/A" if description is null or undefined
         ]);
 
         // Add table with custom column widths
@@ -138,12 +140,13 @@ export default function DailyUpdateList() {
         doc.save(`team_daily_updates_${currentDate}.pdf`);
     };
 
+   
     const downloadAllPDF = () => {
         if (dailyUpdates.length === 0) {
             toast.error('No data available to download', { position: 'top-right', autoClose: 3000 });
             return;
         }
-
+    
         const doc = new jsPDF('landscape'); // Set orientation to landscape
         const groupedUpdates = dailyUpdates.reduce((acc, item) => {
             const date = new Date(item.createdAt).toLocaleDateString('en-CA');
@@ -151,29 +154,32 @@ export default function DailyUpdateList() {
             acc[date].push(item);
             return acc;
         }, {});
-
+    
         // Add title to the PDF
         doc.setFontSize(16);
         doc.text("Team Daily Updates", doc.internal.pageSize.getWidth() / 2, 15, { align: "center" });
-
+    
         let startY = 25; // Initial Y position
-
+    
         Object.keys(groupedUpdates).forEach((date) => {
             // Add date heading
             doc.setFontSize(12);
             doc.text(`Date: ${date}`, 15, startY);
-
+    
             // Prepare table data for the date
             const tableHeaders = ["Sn.", "Name", "Department", "Job Role", "Project Name", "Work Update"];
-            const tableRows = groupedUpdates[date].map((item, index) => [
-                index + 1,
-                item.user.username,
-                item.user.department,
-                item.user.jobRole,
-                item.projectName,
-                item.description,
-            ]);
-
+            const tableRows = groupedUpdates[date].map((item, index) => {
+                const user = item.user || {}; // Fallback to an empty object if user is null
+                return [
+                    index + 1,
+                    user.username || "N/A", // Fallback to "N/A" if username is missing
+                    user.department || "N/A", // Fallback to "N/A" if department is missing
+                    user.jobRole || "N/A", // Fallback to "N/A" if job role is missing
+                    item.projectName || "N/A", // Fallback to "N/A" if project name is missing
+                    item.description || "N/A", // Fallback to "N/A" if description is missing
+                ];
+            });
+    
             // Add table
             doc.autoTable({
                 head: [tableHeaders],
@@ -198,7 +204,7 @@ export default function DailyUpdateList() {
                     }
                 },
             });
-
+    
             // Adjust startY for the next section and add margin after the table
             startY = doc.autoTable.previous.finalY + 10; // Add 10px margin below table
             if (startY > doc.internal.pageSize.height - 30) {
@@ -206,7 +212,7 @@ export default function DailyUpdateList() {
                 startY = 25;
             }
         });
-
+    
         // Save the PDF
         doc.save(`team_All_daily_updates.pdf`);
     };
@@ -233,12 +239,13 @@ export default function DailyUpdateList() {
         const tableHeaders = ["Sn.", "Profile Name", "Department", "Job Role", "Project Name", "Work Update"];
         const tableRows = filteredUpdates.map((item, index) => [
             index + 1,
-            item.user.username,
-            item.user.department,
-            item.user.jobRole,
-            item.projectName,
-            item.description,
+            item.user?.username || "N/A", // Use "N/A" if username is null or undefined
+            item.user?.department || "N/A", // Use "N/A" if department is null or undefined
+            item.user?.jobRole || "N/A", // Use "N/A" if jobRole is null or undefined
+            item.projectName || "N/A", // Use "N/A" if projectName is null or undefined
+            item.description || "N/A", // Use "N/A" if description is null or undefined
         ]);
+
 
         // Add table with custom column widths
         doc.autoTable({

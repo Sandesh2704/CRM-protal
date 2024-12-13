@@ -58,13 +58,13 @@ export default function SideBar({ isOpen, toggleSidebar }) {
       <div
         className={`z-30  bg-white border-r-2  transition-all duration-300 ${isOpen ? 'w-[80%] sm:w-[252px] block' : 'hidden lg:block lg:w-16'}   h-screen fixed`}
         style={{ borderColor: `linear-gradient(266deg, #a54de3 32%, #ff08e9 71%)` }}>
-        <div className={` flex items-center  shadow shadow-white/5 justify-center border-b h-[4.3rem] py-1`}>
+        <div className={` flex items-center   shadow shadow-white/5 justify-between border-b h-[4.3rem] py-1 px-3`}>
           <div className={`${!isOpen ? 'hidden' : ''}`}>
             <img src={logo} alt="logo" className='w-40' />
           </div>
           <div
             onClick={toggleSidebar}
-            className={`group p-2 bg-gradiant rounded-md cursor-pointer  ${!isOpen ? 'flex' : 'hidden'}`} >
+            className={`group p-2 bg-gradiant rounded-md cursor-pointer  ${!isOpen ? 'flex' : 'flex xl:hidden'}`} >
             <span className={`text-2xl font-semibold text-white  group-hover:rotate-180 transform duration-500`}>
               <CiGrid41 />
             </span>

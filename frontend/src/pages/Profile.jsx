@@ -10,13 +10,20 @@ import axios from "axios";
 import { FaUserEdit } from "react-icons/fa";
 import { MdOutlineEdit } from "react-icons/md";
 import Swal from 'sweetalert2';
+import fakeimage from "../assets/fake-img2.webp"
+
 
 export default function Profile() {
   const { user, userAuthentication } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [previewSrc, setPreviewSrc] = useState(
-    `${process.env.REACT_APP_DOMAIN_URL}/${user.profileIMG}` || ""
-  ); // Main profile image
+    user.profileIMG
+      ? `${process.env.REACT_APP_DOMAIN_URL}/${user.profileIMG}`
+      : ""
+  );
+
+
   const [modalPreviewSrc, setModalPreviewSrc] = useState(previewSrc); // Modal preview
   const [updatedData, setUpdatedData] = useState({
     username: user.username,
@@ -29,6 +36,7 @@ export default function Profile() {
     gender: user.gender,
     email: user.email,
     joiningDate: user.joiningDate,
+    dateOfBirth: user.dateOfBirth,
     profileIMG: null,
   });
 
@@ -100,7 +108,7 @@ export default function Profile() {
           {/* Profile Image */}
           <div className="pt-6 lg:pb-6 h-fit col-span-12 lg:col-span-5 xl:col-span-4 flex justify-center">
             <img
-              src={previewSrc} // Main profile image
+              src={previewSrc ? previewSrc : fakeimage}
               alt={user.username}
               className="w-96 h-96 rounded-lg transition-all duration-500 hover:filter hover:grayscale-[80%] hover:brightness-[90%]"
             />
@@ -130,6 +138,7 @@ export default function Profile() {
               <ProfileField label="State" value={user.state} />
               <ProfileField label="Gender" value={user.gender} />
               <ProfileField label="Email" value={user.email} />
+              <ProfileField label="Date Of Birth" value={user.dateOfBirth} />
             </div>
           </div>
         </div>
@@ -168,7 +177,7 @@ export default function Profile() {
                   <div className="w-full md:row-span-2 lg:row-span-2 relative">
                     <div className="relative z-0 flex justify-center items-center">
                       <img
-                        src={modalPreviewSrc} // Modal preview image
+                        src={modalPreviewSrc || fakeimage} // Modal preview image
                         alt="Profile"
                         className="rounded-lg relative z-0 w-full h-72 object-cover border border-gray-300 "
                       />
@@ -254,6 +263,15 @@ export default function Profile() {
                     label="Joining Date"
                     name="joiningDate"
                     value={updatedData.joiningDate}
+                    inputHandler={inputHandler}
+                    placeholder="Enter your gender"
+                  />
+
+                  <TextInput
+                    type="date"
+                    label="Date Of Birth"
+                    name="dateOfBirth"
+                    value={updatedData.dateOfBirth}
                     inputHandler={inputHandler}
                     placeholder="Enter your gender"
                   />

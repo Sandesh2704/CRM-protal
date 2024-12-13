@@ -10,6 +10,7 @@ const departementManage = require("./Router/department-router")
 const userManage = require("./Router/user-router")
 const attendanceManage = require('./Router/attendance-router');
 const dailyUpdateManage = require('./Router/daily-update-router');
+const notificationManage = require("./Router/notification-router")
 
 // app.use(cors());
 app.use(cors({
@@ -36,6 +37,8 @@ app.use("/taskManage", taskManage)
 app.use('/attendanceManage', attendanceManage);
 
 app.use('/dailyUpdateManage', dailyUpdateManage);
+
+app.use('/notificationManage', notificationManage);
 
 app.get("/", (req, res) => {
     res.status(200).send("welcome")

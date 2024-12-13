@@ -29,14 +29,11 @@ const addUser = async (req, res) => {
 
         const profileIMG = req.file ? req.file.path : null;
 
-
-
         // Fetch parent user
         const parentUser = await User.findById(parentId);
         if (!parentUser) {
             return res.status(400).json({ message: 'Invalid parent user.' });
         }
-
 
         const validRoles = {
             'Founder': 'Manager',
@@ -55,7 +52,6 @@ const addUser = async (req, res) => {
         } else if (expectedRoles !== jobPosition) {
             return res.status(400).json({ message: `Invalid parent for ${jobPosition}.` });
         }
-
 
 
         // Check if email is already registered
@@ -97,7 +93,7 @@ const editUser = async (req, res) => {
         // Log uploaded file
 
         const { userId } = req.params;
-        const { username, email, number, department, jobPosition, jobRole, city, state, gender, joiningDate } = req.body;
+        const { username, email, number, department, jobPosition, jobRole, city, state, gender, joiningDate,  dateOfBirth } = req.body;
 
         const user = await User.findById(userId);
         if (!user) {
@@ -119,13 +115,55 @@ const editUser = async (req, res) => {
         if (state) user.state = state;
         if (gender) user.gender = gender;
         if (joiningDate) user.joiningDate = joiningDate;
-
+        if (dateOfBirth) user.dateOfBirth =  dateOfBirth
         await user.save();
 
 
         res.status(200).json({ message: 'User profile updated successfully.', user });
+        
     } catch (err) {
         res.status(500).json({ message: 'Server error', error: err.message });
+    }
+};
+
+const blockUser = async (req, res) => {
+    try {
+        const { userId } = req.body;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.status = 'blocked';
+        await user.save();
+
+        res.status(200).json({ message: `User ${user.username} has been blocked.` });
+    } catch (error) {
+        console.error('Block User Error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+
+const unblockUser = async (req, res) => {
+    try {
+        const { userId } = req.body;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.status = 'active';
+        await user.save();
+
+        res.status(200).json({ message: `User ${user.username} has been unblocked.` });
+    } catch (error) {
+        console.error('Unblock User Error:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 };
 

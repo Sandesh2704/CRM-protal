@@ -7,6 +7,7 @@ import { CgGoogleTasks } from "react-icons/cg";
 import { IoMdCloseCircle } from "react-icons/io";
 import TextInput from '../component/TextInput';
 import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
 
 export default function AssignTask({ staffData }) {
   const { user, token } = useAuth();
@@ -36,9 +37,30 @@ export default function AssignTask({ staffData }) {
     const updatedDocs = documents.filter((_, i) => i !== index);
     setDocuments(updatedDocs);
   };
+  
+  const validateForm = () => {
+    if (!taskData.title.trim()) {
+      toast.error('Title is required.');
+      return false;
+    }
+    if (!taskData.description.trim()) {
+      toast.error('Description is required.');
+      return false;
+    }
+    if (!taskData.deadline.trim()) {
+      toast.error('Deadline is required.');
+      return false;
+    }
+    if (!taskData.recipientId.trim()) {
+      toast.error('Please select a recipient.');
+      return false;
+    }
+    return true;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();   // Log data on form submission
+    if (!validateForm()) return;
 
     const formData = new FormData();
     formData.append('title', taskData.title);
@@ -146,7 +168,7 @@ export default function AssignTask({ staffData }) {
                 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-3">
                   {documents.slice().reverse().map((file, index) => (
                     <li key={index} className="flex items-center justify-between bg-gray-100 py-2 px-3 h-full rounded-lg">
-                      <span className="text-gray-600">{file.name}</span>
+                      <span className="text-gray-600">{file.name.slice(0, 20)}</span>
                       <button
                         type="button"
                         onClick={() => handleRemoveFile(index)}

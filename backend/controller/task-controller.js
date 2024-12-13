@@ -3,13 +3,8 @@ const Task = require("../models/task-model");
 
 const assignTask = async (req, res) => {
     try {
-
-
         const { title, description, deadline, assignerId, recipientId } = req.body;
-
         const assigner = await User.findById(assignerId);
-
-
         const recipient = await User.findById(recipientId);
         // Log recipient details
 
@@ -61,10 +56,6 @@ const viewAssignedTasks = async (req, res) => {
         const tasks = await Task.find({ assignerId })
             .populate('recipientId', 'username email')
             .populate('assignerId', 'username email');
-
-        // if (!tasks || tasks.length === 0) {
-        //     return res.status(404).json({ message: '' });
-        // }
 
         res.status(200).json({ tasks });
     } catch (err) {

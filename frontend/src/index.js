@@ -10,11 +10,11 @@ import RoutingSetup from './mainRouteSetup/RoutingSetup';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <AuthProvider>
-  <React.StrictMode>
-    <RoutingSetup/>
-    <ToastContainer />
-  </React.StrictMode>
-</AuthProvider>
+    <React.StrictMode>
+      <RoutingSetup />
+      <ToastContainer />
+    </React.StrictMode>
+  </AuthProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

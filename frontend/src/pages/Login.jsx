@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { BiHide, BiShow } from 'react-icons/bi';
 import { useAuth } from '../authProvider/AuthProvider';
 
+
 export default function Login() {
 
     const { storeTokenInLS } = useAuth()
@@ -30,37 +31,154 @@ export default function Login() {
         setPasswordShow(!passwordShow);
     };
 
+    // const handleLogin = async (e) => {
+    //     e.preventDefault();
+
+    //     if (loginUser.identifier === 0) {
+    //         toast.error('Email or Phone number is required!', {
+    //             position: "top-right",
+    //             autoClose: 3000,
+    //             className: 'toast-container'
+    //         });
+    //         setLoginUser({ password: '' });
+    //         return;
+    //     }
+
+    //     // Email validation
+    //     if (!loginUser.password) {
+    //         toast.error('Password is required!', {
+    //             position: "top-right",
+    //             autoClose: 3000,
+    //             className: 'toast-container'
+    //         });
+    //         setLoginUser({password: '' });
+    //         return;
+    //     }
+
+    //     try {
+    //         const response = await axios.post('http://localhost:8000/auth/login', loginUser);
+    //         const res_data = response.data; // Directly access response.data
+
+    //         // Store token in localStorage
+    //         storeTokenInLS(res_data.token)
+    //         setLoginUser({ identifier: '', password: '' });
+    //         Swal.fire({
+    //             title: 'Welcome!',
+    //             text: 'You have successfully logged in.',
+    //             icon: 'success',
+    //             confirmButtonText: 'Proceed',
+    //         }).then(() => {
+    //             navigate('/');
+    //         });
+            
+    //     } catch (err) {
+    //         if (err.response && err.response.status === 400) {
+    //             // Show error message if user does not exist
+    //             if (err.response.data.message === 'Invalid Credentials') {
+    //                 toast.error('Email or Phone number not found!', {
+    //                     position: "top-right",
+    //                     autoClose: 3000,
+    //                     className: 'toast-container'
+    //                 });
+    //             } else {
+    //                 toast.error(err.response.data.message);
+    //             }
+    //         } else {
+    //             toast.error(err);
+
+    //         }
+    //     }
+    // };
+
+    // const handleLogin = async (e) => {
+    //     e.preventDefault();
+    
+    //     if (!loginUser.identifier) {
+    //         toast.error('Email or Phone number is required!', {
+    //             position: "top-right",
+    //             autoClose: 3000,
+    //             className: 'toast-container',
+    //         });
+    //         return;
+    //     }
+    
+    //     if (!loginUser.password) {
+    //         toast.error('Password is required!', {
+    //             position: "top-right",
+    //             autoClose: 3000,
+    //             className: 'toast-container',
+    //         });
+    //         return;
+    //     }
+    
+    //     try {
+    //         const response = await axios.post('http://localhost:8000/auth/login', loginUser);
+    
+    //         // On successful login
+    //         const res_data = response.data;
+    //         storeTokenInLS(res_data.token);
+    //         setLoginUser({ identifier: '', password: '' });
+    //         Swal.fire({
+    //             title: 'Welcome!',
+    //             text: 'You have successfully logged in.',
+    //             icon: 'success',
+    //             confirmButtonText: 'Proceed',
+    //         }).then(() => {
+    //             navigate('/');
+    //         });
+    
+    //     } catch (err) {
+    //         if (err.response) {
+    //             if (err.response.status === 404) {
+    //                 toast.error('User not found!', {
+    //                     position: "top-right",
+    //                     autoClose: 3000,
+    //                     className: 'toast-container',
+    //                 });
+    //             } else if (err.response.status === 401) {
+    //                 toast.error('Password does not match!', {
+    //                     position: "top-right",
+    //                     autoClose: 3000,
+    //                     className: 'toast-container',
+    //                 });
+    //             } else {
+    //                 toast.error(err.response.data.message || 'Something went wrong!');
+    //             }
+    //         } else {
+    //             toast.error('Network error. Please try again later.');
+    //         }
+    //     }
+    // };
+
+    
+
     const handleLogin = async (e) => {
         e.preventDefault();
-
+    
         if (!loginUser.identifier) {
             toast.error('Email or Phone number is required!', {
                 position: "top-right",
                 autoClose: 3000,
-                className: 'toast-container'
+                className: 'toast-container',
             });
-            setLoginUser({ password: '' });
             return;
         }
-
-        // Email validation
+    
         if (!loginUser.password) {
             toast.error('Password is required!', {
                 position: "top-right",
                 autoClose: 3000,
-                className: 'toast-container'
+                className: 'toast-container',
             });
-            setLoginUser({password: '' });
             return;
         }
-
+    
         try {
-
             const response = await axios.post('http://localhost:8000/auth/login', loginUser);
-            const res_data = response.data; // Directly access response.data
-
-            // Store token in localStorage
-            storeTokenInLS(res_data.token)
+    
+            // On successful login
+            const res_data = response.data;
+            storeTokenInLS(res_data.token);
             setLoginUser({ identifier: '', password: '' });
             Swal.fire({
                 title: 'Welcome!',
@@ -70,26 +188,43 @@ export default function Login() {
             }).then(() => {
                 navigate('/');
             });
-            
+    
         } catch (err) {
-            if (err.response && err.response.status === 400) {
-                // Show error message if user does not exist
-                if (err.response.data.message === 'Invalid Credentials') {
-                    toast.error('Email or Phone number not found!', {
+            if (err.response) {
+                if (err.response.status === 404) {
+                    toast.error('User not found!', {
                         position: "top-right",
                         autoClose: 3000,
-                        className: 'toast-container'
+                        className: 'toast-container',
+                    });
+                } else if (err.response.status === 401) {
+                    toast.error('Password does not match!', {
+                        position: "top-right",
+                        autoClose: 3000,
+                        className: 'toast-container',
+                    });
+                } else if (err.response.status === 403) { 
+                    toast.error('Your account is blocked. Please contact the admin.', {
+                        position: "top-right",
+                        autoClose: 3000,
+                        className: 'toast-container',
                     });
                 } else {
-                    toast.error(err.response.data.message);
+                    toast.error(err.response.data.message || 'Something went wrong!', {
+                        position: "top-right",
+                        autoClose: 3000,
+                        className: 'toast-container',
+                    });
                 }
             } else {
-                toast.error(err);
+                toast.error('Network error. Please try again later.', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    className: 'toast-container',
+                });
             }
         }
     };
-
-    
     
 
 

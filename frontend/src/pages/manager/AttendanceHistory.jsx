@@ -365,14 +365,19 @@ export default function AttendanceHistory({ staffData }) {
         setQuery(e.target.value.toLowerCase());
     };
 
+
+
     const highlightMatch = (text) => {
         if (!query) return text;
         const parts = text.split(new RegExp(`(${query})`, "gi"));
-        return parts
-            .map((part, index) =>
-                part.toLowerCase() === query.toLowerCase() ? <mark key={index}>{part}</mark> : part
+        console.log("Text parts:", parts); // Debugging log
+        return parts.map((part, index) =>
+            part.toLowerCase() === query.toLowerCase() ? (
+                <mark key={index}>{part}</mark>
+            ) : (
+                part
             )
-            .join("");
+        );
     };
 
     const filteredStaffData = staffData.filter((staff) =>
@@ -398,7 +403,7 @@ export default function AttendanceHistory({ staffData }) {
                         value={query}
                         onChange={handleSearchChange}
                         className="placeholder:text-zinc-500 outline-none bg-transparent"
-                        placeholder="Search by username, email..."
+                        placeholder="Search by User"
                     />
                     <IoSearchOutline />
                 </div>
@@ -413,12 +418,18 @@ export default function AttendanceHistory({ staffData }) {
                     }} 
                     key={staff._id} 
                     className="bg-white shadow rounded-lg py-6 px-4 lg:px-6  text-center">
-                        <h2
+                        {/* <h2
                             className="text-xl font-semibold mb-4"
                             dangerouslySetInnerHTML={{
                                 __html: highlightMatch(staff.username || ""),
                             }}
-                        />
+                        /> */}
+
+
+<h2 className="text-xl font-semibold mb-4">
+    {highlightMatch(staff.username || "")}
+</h2>
+
                         <Link
                             to={`/manager/attendance-history/${staff._id}`}
                             state={{

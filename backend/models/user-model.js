@@ -16,8 +16,10 @@ const userSchema = new mongoose.Schema({
     state: { type: String, required: false },
     gender: { type: String, required: false },
     profileIMG: { type: String, required: false },
+    dateOfBirth: { type: String, required: false }, 
     joiningDate: { type: String, require: false },
     parentId: { type: Schema.Types.ObjectId, ref: 'User' },
+    status: { type: String, enum: ['active', 'blocked'], default: 'active' }, 
 }, { timestamps: true });
 
 

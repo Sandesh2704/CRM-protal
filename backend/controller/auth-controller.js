@@ -54,11 +54,21 @@ const login = async (req, res, next) => {
       $or: [{ email: identifier }, { number: identifier }]
     });
 
+
     if (!userExist) {
-      return res.status(400).json({ message: 'Invalid Credentials' });
+      return res.status(404).json({ message: 'User not found' }); // Return 404 for user not found
     }
 
     const isPasswordCorrect = await userExist.ComparePassword(password);
+
+    if (!isPasswordCorrect) {
+      return res.status(401).json({ message: 'Password does not match' }); // Return 401 for incorrect password
+    }
+
+    if (userExist.status === 'blocked') {
+      return res.status(403).json({ message: 'User is blocked. Please contact the admin.' });
+    }
+
 
     if (isPasswordCorrect) {
       res.status(200).json({
@@ -80,7 +90,7 @@ const checkUser = async (req, res) => {
     const { email, number } = req.query;
 
     if (!email && !number) {
-      return res.status(400).json({ message: 'Email or number is required' });
+      return res.status(400).json({ message: 'Email or number is not exist ' });
     }
 
     // Create an empty filter object
