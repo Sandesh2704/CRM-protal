@@ -1,18 +1,23 @@
 import { Route, Routes, } from 'react-router-dom';
-import Dashboard from '../pages/founder/Dashboard';
-import Profile from '../pages/Profile';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
+
+
 import Layout from '../layout/Layout';
 import AllEmployes from '../pages/founder/AllEmployes';
 import AddNewManager from '../pages/founder/AddNewManager';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import Dashboard from '../pages/founder/Dashboard';
 import Department from '../pages/founder/Department';
-import StaffDetail from '../pages/StaffDetail';
-import AssignTask from '../pages/AssignTask';
 import TaskUpdateList from '../pages/founder/TaskUpdateList';
-import AssignTaskDetails from '../pages/AssignTaskDetails';
 import DailyUpdateList from '../pages/founder/DailyUpdateList';
 
+import StaffDetail from '../pages/details-pages/StaffDetail.jsx';
+import AssignTaskDetails from '../pages/details-pages/AssignTaskDetails';
+
+import AssignTask from '../pages/common-pages/AssignTask';
+import Profile from '../pages/common-pages/Profile.jsx';
+import Notification from '../pages/common-pages/Notification.jsx';
 
 export default function FounderRoutes() {
 
@@ -67,6 +72,7 @@ export default function FounderRoutes() {
           <Route path="staffDeatils/:slug" element={<StaffDetail/>} />
           <Route path="assignTaskDetails/:slug" element={<AssignTaskDetails/>} />
           <Route path="daily-update-list" element={<DailyUpdateList/>} />
+          <Route path="notification" element={<Notification />} />
         </Route>
       </Routes>
     </>

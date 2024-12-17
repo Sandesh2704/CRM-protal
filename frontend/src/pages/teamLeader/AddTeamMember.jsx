@@ -12,7 +12,7 @@ import { checkUserExists, validateInputs } from '../../userValidation/UserValida
 import { toast } from 'react-toastify';
 import { AiOutlineUserAdd } from 'react-icons/ai';
 
-export default function AddTeamMember() {
+export default function AddTeamMember({fetchteamLeadersList}) {
   const { user } = useAuth();
   const parentId = user?._id;
 
@@ -98,7 +98,7 @@ export default function AddTeamMember() {
       });
       setPreviewSrc('');
 
-
+      fetchteamLeadersList()
 
       Swal.fire({
         title: 'Manager added successfully!',

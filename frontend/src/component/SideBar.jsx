@@ -10,10 +10,17 @@ import { RiFileList2Line } from 'react-icons/ri';
 import { CgGoogleTasks } from 'react-icons/cg';
 import { SlCalender } from "react-icons/sl";
 import { GrTasks } from "react-icons/gr";
-import { FaWpforms } from "react-icons/fa6";
+import { FaWpforms, FaBell } from "react-icons/fa6";
 import { PiListPlusFill } from 'react-icons/pi';
+import { useFetchNotification } from '../utils/useFetchNotification';
+
 
 export default function SideBar({ isOpen, toggleSidebar }) {
+
+  const { unreadCount } = useFetchNotification()
+
+  const location = useLocation();
+  const isActive = location.pathname === URL;
   const { userJobPosition } = useAuth();
   const roleBasedLinks = {
     Founder: [
@@ -40,7 +47,7 @@ export default function SideBar({ isOpen, toggleSidebar }) {
       { path: '/team-leader', label: 'Dashboard', icon: <CiGrid41 /> },
       { path: '/team-leader/team-members', label: 'Team Members', icon: <LuUsers2 /> },
       { path: '/team-leader/add-new-team-members', label: 'Add Team Members', icon: <AiOutlineUserAdd /> },
-      { path: '/team-leader/task-list', label: 'Your Task', icon: <GrTasks /> },
+      { path: '/team-leader/your-task', label: 'Your Task', icon: <GrTasks /> },
       { path: '/team-leader/assign-task', label: 'Assign Task', icon: <CgGoogleTasks /> },
       { path: '/team-leader/task-update', label: 'Assign Task Update', icon: <VscTasklist /> },
       { path: '/team-leader/daily-update-form', label: 'Daily Update Form', icon: < PiListPlusFill /> },
@@ -48,10 +55,15 @@ export default function SideBar({ isOpen, toggleSidebar }) {
     ],
     Employee: [
       { path: '/employee', label: 'Dashboard', icon: <CiGrid41 /> },
-      { path: '/employee/task-list', label: 'Your Task', icon: <GrTasks /> },
+      { path: '/employee/your-task', label: 'Your Task', icon: <GrTasks /> },
       { path: '/employee/daily-update-form', label: 'Daily Update Form', icon: < PiListPlusFill /> },
     ],
   }
+
+
+
+
+
 
   return (
     <>
@@ -75,6 +87,35 @@ export default function SideBar({ isOpen, toggleSidebar }) {
           {roleBasedLinks[userJobPosition]?.map((link) => (
             <MenuItem URL={link.path} icon={link.icon} label={link.label} isOpen={isOpen} key={link.path} />
           ))}
+
+          <Link
+            to="notification"
+            className={`flex items-center group 
+        ${!isOpen ? 'justify-center py-2' : 'py-2 px-3 justify-between'} 
+        ${isActive ? 'bg-gradiant text-white rounded-md' : 'text-gray-600 hover:text-purple-500'}
+      `
+            }
+          >
+            <div className='flex items-center '>
+              <div className={`relative text-xl font-bold ${!isOpen ? 'hidden lg:flex' : ''} duration-600`}>
+                <FaBell />
+
+              </div>
+              {isOpen && <div className='flex items-center gap-3'>
+                <span className="ml-3 text-base">Notification </span>
+                {unreadCount > 0 && (
+                  <span className=" bg-red-500 text-white text-base rounded-full px-2">
+                    {unreadCount}
+                  </span>
+                )}
+              </div>}
+            </div>
+            {isOpen && (
+              <span className="hidden group-hover:flex duration-300 text-lg">
+                <TbPinnedFilled />
+              </span>
+            )}
+          </Link>
         </div>
       </div>
     </>

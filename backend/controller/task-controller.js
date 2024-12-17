@@ -1,5 +1,6 @@
 const { User } = require("../models/user-model");
 const Task = require("../models/task-model");
+const Notification = require("../models/notification-model");
 
 const assignTask = async (req, res) => {
     try {
@@ -27,6 +28,17 @@ const assignTask = async (req, res) => {
             documents
         });
 
+         // Create notifications
+        await Notification.create([
+            {
+                userId: recipient._id,
+                type: 'task',  // New task
+                message: `You have been assigned a new task: ${title}`,
+                taskId: newTask._id, // Add taskId
+                taskType: 'new',  // Indicate this is a new task
+            },
+        ]);
+
         await newTask.save();
         res.status(201).json({ message: 'Task assigned successfully', task: newTask });
     } catch (err) {
@@ -37,17 +49,17 @@ const assignTask = async (req, res) => {
 
 const getAssignTask = async (req, res) => {
     try {
-
         const tasks = await Task.find({ recipientId: req.params.userId })
         .populate('recipientId', 'username email')
         .populate('assignerId', 'username email');
-
 
         res.json(tasks);
     } catch (error) {
         res.status(500).json({ message: "Server error." });
     }
 };
+
+
 
 const viewAssignedTasks = async (req, res) => {
     try {
@@ -86,6 +98,16 @@ const updateTaskStatus = async (req, res) => {
         }
 
         await task.save();
+        // Create notifications
+
+
+        await Notification.create({
+            userId: task.assignerId, // Ensure this exists in the task object
+            type: 'task',
+            message: `Task '${task.title}' that you assigned has been updated. Status: ${task.status}`,
+            taskId: task._id, // Add taskId here
+            taskType: 'update',
+        });
 
         res.status(200).json({ message: "Task updated successfully", task });
     } catch (err) {
@@ -93,6 +115,4 @@ const updateTaskStatus = async (req, res) => {
     }
 };
 
-
 module.exports = { assignTask, getAssignTask, viewAssignedTasks, updateTaskStatus }
-

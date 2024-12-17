@@ -10,16 +10,16 @@ const userSchema = new mongoose.Schema({
     number: { type: String, required: true },
     password: { type: String, required: true },
     department: { type: String, required: false },
-    jobPosition: { type: String, required: true }, 
+    jobPosition: { type: String, required: true },
     jobRole: { type: String, required: false },
     city: { type: String, required: false },
     state: { type: String, required: false },
     gender: { type: String, required: false },
     profileIMG: { type: String, required: false },
-    dateOfBirth: { type: String, required: false }, 
+    dateOfBirth: { type: String, required: false },
     joiningDate: { type: String, require: false },
     parentId: { type: Schema.Types.ObjectId, ref: 'User' },
-    status: { type: String, enum: ['active', 'blocked'], default: 'active' }, 
+    status: { type: String, enum: ['active', 'blocked'], default: 'active' },
 }, { timestamps: true });
 
 
@@ -53,4 +53,4 @@ userSchema.methods.generateToken = async function () {
 };
 
 const User = mongoose.model("User", userSchema);
-module.exports = { User, };
+module.exports = { User };

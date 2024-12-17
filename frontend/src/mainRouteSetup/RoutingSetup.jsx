@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import RagistrationForm from '../pages/RagistrationForm';
-import Login from '../pages/Login';
-import Logout from '../pages/Logout';
+import RagistrationForm from '../pages/1st-ragistration/RagistrationForm';
+import Login from '../pages/common-pages/Login';
+import Logout from '../pages/common-pages/Logout';
 import FounderRoutes from '../RoutesByPosition/FounderRoutes';
 import ManagerRoutes from '../RoutesByPosition/ManagerRoutes';
 import TeamLeaderRoutes from '../RoutesByPosition/TeamLeaderRoutes';

@@ -11,6 +11,8 @@ const userManage = require("./Router/user-router")
 const attendanceManage = require('./Router/attendance-router');
 const dailyUpdateManage = require('./Router/daily-update-router');
 const notificationManage = require("./Router/notification-router")
+const { createBirthdayNotifications } = require("./controller/brithday-Notification-controller");
+const cron = require('node-cron');
 
 // app.use(cors());
 app.use(cors({
@@ -39,6 +41,15 @@ app.use('/attendanceManage', attendanceManage);
 app.use('/dailyUpdateManage', dailyUpdateManage);
 
 app.use('/notificationManage', notificationManage);
+
+
+
+// Schedule the task to run daily at midnight
+cron.schedule('0 0 * * *', async () => {
+    console.log('Running scheduled task for birthday notifications');
+    await createBirthdayNotifications();
+});
+
 
 app.get("/", (req, res) => {
     res.status(200).send("welcome")
